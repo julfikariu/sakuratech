@@ -8,6 +8,7 @@ import {
     BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Link } from '@inertiajs/vue3';
+import { Home } from 'lucide-vue-next';
 
 interface BreadcrumbItemType {
     title: string;
@@ -28,6 +29,7 @@ defineProps<{
                         <BreadcrumbPage>{{ item.title }}</BreadcrumbPage>
                     </template>
                     <template v-else>
+                        <Home class="w-4 h-4" />
                         <BreadcrumbLink as-child>
                             <Link :href="item.href ?? '#'">{{
                                 item.title

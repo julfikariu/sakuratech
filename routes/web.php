@@ -4,6 +4,7 @@ use Inertia\Inertia;
 use Laravel\Fortify\Features;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Admin\DashboardController;
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
@@ -12,8 +13,8 @@ use App\Http\Controllers\Frontend\HomeController;
 // })->name('home');
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 require __DIR__.'/settings.php';
+
+require __DIR__.'/admin.php';

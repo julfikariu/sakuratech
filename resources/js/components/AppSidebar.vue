@@ -11,17 +11,25 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-vue-next';
+import { BookOpen, Folder, LayoutGrid,
+    User
+} from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
+import { index as contacts } from '@/routes/admin/contacts';
+import { dashboard } from '@/routes';
 
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
+    },
+    {
+        title: 'Contacts',
+        href: contacts(),
+        icon: User,
     },
 ];
 
