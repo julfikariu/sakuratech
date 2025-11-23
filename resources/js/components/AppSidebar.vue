@@ -18,6 +18,7 @@ import { BookOpen, Folder, LayoutGrid,
 } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 import { index as contacts } from '@/routes/admin/contacts';
+import { index as roles } from '@/routes/admin/role';
 import { dashboard } from '@/routes';
 
 const mainNavItems: NavItem[] = [
@@ -29,6 +30,11 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Contacts',
         href: contacts(),
+        icon: User,
+    },
+    {
+        title: 'Roles',
+        href: roles(),
         icon: User,
     },
 ];

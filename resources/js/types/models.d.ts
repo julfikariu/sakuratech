@@ -7,6 +7,12 @@ export interface Contact {
     created_at: string;
 }
 
+export interface Role {
+    id: number,
+    name: string,
+    description: string,
+}
+
 export interface PaginationLink {
     url: string | null
     label: string
