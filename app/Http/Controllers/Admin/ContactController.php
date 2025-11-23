@@ -13,10 +13,21 @@ class ContactController extends Controller
      */
     public function index()
     {        
-        $contacts = Contact::all();
+        $paginator = Contact::paginate(10)->withQueryString();
+
+        $paginator->getCollection()->transform(function ($contact) {
+            return [
+                'id'          => $contact->id,
+                'name'        => $contact->name,
+                'email'       => $contact->email,
+                'subject'     => $contact->subject,
+                'message'     => $contact->message,
+                'created_at'  => $contact->created_at?->format('d M Y, h:i A'),
+            ];
+        });
 
         return inertia('admin/contacts/Index', [
-            'contacts' => $contacts,
+            'contacts' => $paginator,
         ]);
     }
 
