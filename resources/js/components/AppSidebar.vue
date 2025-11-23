@@ -11,15 +11,18 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import { dashboard } from '@/routes';
+import { index as contacts } from '@/routes/admin/contacts';
+import { index as permissions } from '@/routes/admin/permission';
+import { index as roles } from '@/routes/admin/role';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid,
+import {
+    Key,
+    LayoutGrid,
     User
 } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
-import { index as contacts } from '@/routes/admin/contacts';
-import { index as roles } from '@/routes/admin/role';
-import { dashboard } from '@/routes';
 
 const mainNavItems: NavItem[] = [
     {
@@ -36,6 +39,11 @@ const mainNavItems: NavItem[] = [
         title: 'Roles',
         href: roles(),
         icon: User,
+    },
+    {
+        title: 'Permissions',
+        href: permissions(),
+        icon: Key,
     },
 ];
 

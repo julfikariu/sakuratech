@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\ContactController;
 
 
@@ -10,4 +11,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
     // Manage Roles
     Route::resource('role', RoleController::class)->except('create', 'show', 'edit');
+  
+    // Manage Permissions
+    Route::resource('permission', PermissionController::class)->except('create', 'show', 'edit');
 });

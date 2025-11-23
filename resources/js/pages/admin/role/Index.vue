@@ -10,7 +10,6 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import AppLayout from '@/layouts/AppLayout.vue';
-// import RoleForm from '@/pages/role/RoleForm.vue';
 import { deleteBySwal } from '@/composables/useSwal';
 import { KeyIcon, SquarePen, Trash2Icon, Plus } from 'lucide-vue-next';
 // import RolePermissionModal from '@Modules/DevTool/resources/js/pages/rolepermission/RolePermissionModal.vue';

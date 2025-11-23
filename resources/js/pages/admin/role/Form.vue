@@ -82,7 +82,7 @@ function submitForm() {
         <div class="flex items-center mt-6">
             <div class="flex gap-2 ">
                 <Button type="submit"  variant="save" :disabled="form.processing">
-                    <LoaderCircle v-if="form.processing" class="w-4 h-4 animate-spin mr-2" />
+                    <LoaderCircle v-if="form.processing" class="w-4 h-4 animate-spin" />
                     <Save v-else class="w-4 h-4" />
                     Save
                 </Button>
