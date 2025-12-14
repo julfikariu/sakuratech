@@ -1,8 +1,8 @@
-<section id="working-process" class="relative py-16 bg-gray-50">
-	<div class="max-w-7xl mx-auto px-6" data-aos="fade-up">
+<section id="working-process" class="relative py-16 bg-white">
+	<div class="max-w-7xl mx-auto px-6">
 		<p class="text-center text-sm tracking-widest font-semibold text-green-600">WORK PROCESS</p>
 		<h2 class="text-center text-3xl md:text-4xl font-extrabold text-gray-900 mt-2">
-			6 simple steps to get your website ready
+			4 simple steps to get your website ready
 		</h2>
 	</div>
 
@@ -17,7 +17,7 @@
 
 			<!-- card 1 -->
 			<div
-				class="group relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-emerald-400" data-aos="fade-up">
+				class="group relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-emerald-400">
 				<div class="p-6 flex items-start gap-4">
 					<!-- number -->
 					<div class="shrink-0">
@@ -44,7 +44,7 @@
 
 			<!-- card 2 -->
 			<div
-				class="group relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-amber-400" data-aos="fade-up">
+				class="group relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-amber-400">
 				<div class="p-6 flex items-start gap-4">
 
 					<div class="shrink-0">
@@ -69,7 +69,7 @@
 
 			<!-- card 3 -->
 			<div
-				class="group relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-rose-400" data-aos="fade-up">
+				class="group relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-rose-400">
 				<div class="p-6 flex items-start gap-4">
 					<div class="w-14 h-14 rounded-md bg-rose-50 flex items-center justify-center">
 						<span class="text-2xl font-extrabold text-rose-500">03</span>
@@ -89,17 +89,38 @@
 				</div>
 			</div>
 
-	
+			<!-- card 4 -->
+			<div
+				class="group relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-indigo-400">
+				<div class="p-6 flex items-start gap-4">
+					<div class="w-14 h-14 rounded-md bg-indigo-50 flex items-center justify-center">
+						<span class="text-2xl font-extrabold text-indigo-600">04</span>
+					</div>
+					<div class="text-left">
+						<div class="flex items-center justify-between gap-3">
+							<h3 class="text-2xl font-semibold text-gray-900">Feedback</h3>
+							<svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" stroke-width="2"
+								viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M21 15a4 4 0 01-4 4H7l-4 4V7a4 4 0 014-4h10a4 4 0 014 4z" />
+							</svg>
+						</div>
+						<p class="mt-2 text-gray-600">
+							Iterate together and polish until it’s perfect.
+						</p>
+					</div>
+				</div>
+			</div>
+
              <!-- Testing Section -->
-            <div class="group relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-indigo-400" data-aos="fade-up">
+            <div class="group relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-green-400">
                 <div class="p-6 flex items-start gap-4">
-                    <div class="w-14 h-14 rounded-md bg-indigo-50 flex items-center justify-center">
-                        <span class="text-2xl font-extrabold text-indigo-600">04</span>
+                    <div class="w-14 h-14 rounded-md bg-green-50 flex items-center justify-center">
+                        <span class="text-2xl font-extrabold text-green-600">02</span>
                     </div>
                     <div class="text-left">
                         <div class="flex items-center justify-between gap-3">
                             <h3 class="text-2xl font-semibold text-gray-900">Testing</h3>
-                            <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" stroke-width="2"
+                            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" stroke-width="2"
                                 viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                             </svg>
@@ -112,7 +133,7 @@
             </div>
 
             <!-- Launch Section -->
-            <div class="group relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-blue-400" data-aos="fade-up">
+            <div class="group relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-blue-400">
                 <div class="p-6 flex items-start gap-4">
                     <div class="w-14 h-14 rounded-md bg-blue-50 flex items-center justify-center">
                         <span class="text-2xl font-extrabold text-blue-600">03</span>
@@ -134,7 +155,7 @@
             </div>
 
             <!-- Support Section -->
-            <div class="group relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-purple-400" data-aos="fade-up">
+            <div class="group relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border-l-4 border-purple-400">
                 <div class="p-6 flex items-start gap-4">
                     <div class="w-14 h-14 rounded-md bg-purple-50 flex items-center justify-center">
                         <span class="text-2xl font-extrabold text-purple-600">05</span>

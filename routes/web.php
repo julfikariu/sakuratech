@@ -12,6 +12,12 @@ use App\Http\Controllers\Admin\DashboardController;
 //     ]);
 // })->name('home');
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/service', [HomeController::class, 'service'])->name('service');
+Route::get('/service/{slug}', [HomeController::class, 'serviceDetails'])->name('service.details');
+
+
+Route::get('/project', [HomeController::class, 'project'])->name('project');
+Route::get('/project/{slug}', [HomeController::class, 'projectDetails'])->name('project.details');
 
 Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 

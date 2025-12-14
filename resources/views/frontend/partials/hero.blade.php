@@ -2,7 +2,7 @@
 	<!-- Left Side Text -->
 
 		<div class="max-w-7xl mx-auto flex items-center justify-between min-h-screen">
-			<div class="w-full md:w-1/2 px-6 py-12 text-center md:text-left">
+			<div class="w-full md:w-1/2 px-6 py-12 text-center md:text-left"  data-aos="fade-right">
 				<h1 class="text-5xl md:text-5xl/ font-bold leading-tight mb-6">
 					Transform Your Web Presence with <span class="text-yellow-400">Laravel</span>
 				</h1>
@@ -24,7 +24,7 @@
 			</div>
 
 			<!-- Right Side Image -->
-			<div class="hidden md:block w-1/2">
+			<div class="hidden md:block w-1/2"  data-aos="fade-left">
 				<img src="{{ asset('img/e.png')}}" alt="Laravel development image" class="w-full h-full object-cover" />
 			</div>
 		</div>

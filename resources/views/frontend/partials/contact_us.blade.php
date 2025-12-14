@@ -1,13 +1,13 @@
 <section id="contact" class="py-16 bg-gray-50">
 	<div class="max-w-7xl mx-auto px-6 lg:px-12">
-		<div class="text-center mb-12">
+		<div class="text-center mb-12" data-aos="fade-up">
 			<h2 class="text-4xl font-bold text-gray-800">Contact Us</h2>
 			<p class="text-gray-600 mt-2">We’d love to hear from you. Let’s build something amazing together.</p>
 		</div>
 
 		<div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
 			<!-- Contact Info -->
-			<div class="space-y-6">
+			<div class="space-y-6" data-aos="fade-right">
 				<div class="flex items-start space-x-4">
 					<div class="w-12 h-12 flex items-center justify-center bg-indigo-100 text-indigo-600 rounded-lg">
 						<i class="fas fa-map-marker-alt text-xl"></i>
@@ -40,7 +40,7 @@
 			</div>
 
 			<!-- Contact Form -->
-			<form action="#" method="POST" class="bg-white shadow-lg rounded-lg p-8 space-y-6">
+			<form action="#" method="POST" class="bg-white shadow-lg rounded-lg p-8 space-y-6" data-aos="fade-left">
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 					<input type="text" placeholder="Your Name"
 						class="w-full border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">

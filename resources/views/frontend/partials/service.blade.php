@@ -2,16 +2,15 @@
 	<div class="max-w-7xl mx-auto px-6 lg:px-8">
 
 		<!-- Heading -->
-		<div class="text-center max-w-3xl mx-auto">
+		<div class="text-center max-w-3xl mx-auto" data-aos="fade-up">
 			<p class="text-sm uppercase tracking-widest font-semibold" style="color:#5e17eb">
 				Our Services
 			</p>
 			<h2 class="mt-2 text-3xl md:text-4xl font-extrabold text-gray-900">
-				What We Do at <span style="color:#5e17eb">Sakura SoftTech</span>
+				What We Do at
 			</h2>
 			<p class="mt-3 text-gray-600">
-				From idea to launch and beyond — we design, build and scale modern web apps with Laravel and a robust
-				cloud/tooling stack.
+				From idea to launch — Laravel, APIs, dashboards and DevOps.
 			</p>
 		</div>
 
@@ -19,7 +18,7 @@
 		<div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
 			<!-- Card -->
-			<div class="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all">
+			<div class="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl  transition-all" data-aos="fade-up">
 				<div class="h-[70px] w-[70px] rounded-xl flex items-center justify-center mb-4"
 					style="background:rgba(94,23,235,.12); color:#5e17eb">
 					<i class="fas fa-code text-2xl"></i>
@@ -32,12 +31,10 @@
 					style="color:#5e17eb">
 					Start a project <i class="fas fa-arrow-right text-xs"></i>
 				</a>
-				<span class="pointer-events-none absolute inset-x-0 bottom-0 h-0.5 opacity-0 group-hover:opacity-100"
-					style="background:#5e17eb; transition:opacity .25s;"></span>
 			</div>
 
 			<!-- Card -->
-			<div class="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all">
+			<div class="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all" data-aos="fade-up">
 				<div class="h-[70px] w-[70px] rounded-xl flex items-center justify-center mb-4"
 					style="background:rgba(94,23,235,.12); color:#5e17eb">
 					<i class="fas fa-cubes text-2xl"></i>
@@ -50,12 +47,10 @@
 					style="color:#5e17eb">
 					Learn more <i class="fas fa-arrow-right text-xs"></i>
 				</a>
-				<span class="pointer-events-none absolute inset-x-0 bottom-0 h-0.5 opacity-0 group-hover:opacity-100"
-					style="background:#5e17eb; transition:opacity .25s;"></span>
 			</div>
 
 			<!-- Card -->
-			<div class="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all">
+			<div class="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all" data-aos="fade-up">
 				<div class="h-[70px] w-[70px] rounded-xl flex items-center justify-center mb-4"
 					style="background:rgba(94,23,235,.12); color:#5e17eb">
 					<i class="fas fa-shopping-cart text-2xl"></i>
@@ -68,12 +63,10 @@
 					style="color:#5e17eb">
 					Learn more <i class="fas fa-arrow-right text-xs"></i>
 				</a>
-				<span class="pointer-events-none absolute inset-x-0 bottom-0 h-0.5 opacity-0 group-hover:opacity-100"
-					style="background:#5e17eb; transition:opacity .25s;"></span>
 			</div>
 
 			<!-- Card -->
-			<div class="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all">
+			<div class="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all" data-aos="fade-up">
 				<div class="h-[70px] w-[70px] rounded-xl flex items-center justify-center mb-4"
 					style="background:rgba(94,23,235,.12); color:#5e17eb">
 					<i class="fas fa-laptop-code text-2xl"></i>
@@ -86,12 +79,10 @@
 					style="color:#5e17eb">
 					Learn more <i class="fas fa-arrow-right text-xs"></i>
 				</a>
-				<span class="pointer-events-none absolute inset-x-0 bottom-0 h-0.5 opacity-0 group-hover:opacity-100"
-					style="background:#5e17eb; transition:opacity .25s;"></span>
 			</div>
 
 			<!-- Card -->
-			<div class="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all">
+			<div class="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all" data-aos="fade-up">
 				<div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
 					style="background:rgba(94,23,235,.12); color:#5e17eb">
 					<i class="fas fa-mobile-alt text-xl"></i>
@@ -104,12 +95,10 @@
 					style="color:#5e17eb">
 					Learn more <i class="fas fa-arrow-right text-xs"></i>
 				</a>
-				<span class="pointer-events-none absolute inset-x-0 bottom-0 h-0.5 opacity-0 group-hover:opacity-100"
-					style="background:#5e17eb; transition:opacity .25s;"></span>
 			</div>
 
 			<!-- Card -->
-			<div class="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all">
+			<div class="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all" data-aos="fade-up">
 				<div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
 					style="background:rgba(94,23,235,.12); color:#5e17eb">
 					<i class="fas fa-drafting-compass text-xl"></i>
@@ -122,12 +111,10 @@
 					style="color:#5e17eb">
 					Learn more <i class="fas fa-arrow-right text-xs"></i>
 				</a>
-				<span class="pointer-events-none absolute inset-x-0 bottom-0 h-0.5 opacity-0 group-hover:opacity-100"
-					style="background:#5e17eb; transition:opacity .25s;"></span>
 			</div>
 
 			<!-- Card -->
-			<div class="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all">
+			<div class="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all" data-aos="fade-up">
 				<div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
 					style="background:rgba(94,23,235,.12); color:#5e17eb">
 					<i class="fas fa-sync-alt text-xl"></i>
@@ -140,12 +127,10 @@
 					style="color:#5e17eb">
 					Learn more <i class="fas fa-arrow-right text-xs"></i>
 				</a>
-				<span class="pointer-events-none absolute inset-x-0 bottom-0 h-0.5 opacity-0 group-hover:opacity-100"
-					style="background:#5e17eb; transition:opacity .25s;"></span>
 			</div>
 
 			<!-- Card -->
-			<div class="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all">
+			<div class="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all" data-aos="fade-up">
 				<div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
 					style="background:rgba(94,23,235,.12); color:#5e17eb">
 					<i class="fas fa-life-ring text-xl"></i>
@@ -158,15 +143,13 @@
 					style="color:#5e17eb">
 					Learn more <i class="fas fa-arrow-right text-xs"></i>
 				</a>
-				<span class="pointer-events-none absolute inset-x-0 bottom-0 h-0.5 opacity-0 group-hover:opacity-100"
-					style="background:#5e17eb; transition:opacity .25s;"></span>
 			</div>
 
 		</div>
 
 		<!-- CTA -->
-		<div class="text-center mt-12">
-			<a href="#contact" class="inline-flex items-center gap-2 px-6 py-3 rounded-full text-white font-semibold shadow-lg transition
+		<div class="text-center mt-12" data-aos="fade-up">
+			<a href="{{  route('service') }}" class="inline-flex items-center gap-2 px-6 py-3 rounded-full text-white font-semibold shadow-lg transition
                 hover:-translate-y-0.5" style="background:#5e17eb">
 				View All Services <i class="fas fa-arrow-right text-sm"></i>
 			</a>

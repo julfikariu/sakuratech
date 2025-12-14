@@ -1,5 +1,5 @@
 <!-- Navigation -->
-<nav class="bg-white backdrop-blur-md shadow-lg fixed w-full top-0 z-50">
+<nav class="bg-white backdrop-blur-md shadow fixed w-full top-0 z-50">
     <div class="max-w-7xl mx-auto py-3">
         <div class="flex justify-between items-center">
             <div class="flex items-center space-x-3">
@@ -7,7 +7,7 @@
                     class="w-10 h-10 bg-gradient-to-r from-indigo-800 to-purple-900 rounded-lg flex items-center justify-center">
                     <i class="fas fa-code text-white text-lg"></i>
                 </div>
-                <span class="text-2xl font-bold text-gray-800">Sakura SoftTech</span>
+                <a href="{{ url('/') }}"><span class="text-2xl font-bold text-gray-800">Sakura SoftTech</span></a>
             </div>
             <div class="hidden md:flex space-x-8 items-center">
                 <a href="#home"
@@ -27,7 +27,7 @@
                     data-i18n="nav.contact">Contact</a>
                 
             </div>
-            <a href="{{ route('login') }}" class="get-started-btn text-white">
+            <a href="/login" class="get-started-btn text-white">
                 <span>Get Started</span>
                 <i class="fas fa-arrow-right"></i>
             </a>

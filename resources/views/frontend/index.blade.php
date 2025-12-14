@@ -3,7 +3,7 @@
 @section('content')
     <!-- HERO SECTION -->
     @include('frontend.partials.hero')
-
+    
     <!-- About Section -->
     @include('frontend.partials.about')
 
@@ -15,7 +15,7 @@
     @include('frontend.partials.our_project')
 
     <!-- WORK PROCESS -->
-    @include('frontend.partials.working_process')
+    {{-- @include('frontend.partials.working_process') --}}
     @include('frontend.partials.working_second')
 
     <!-- TECHNOLOGY STACK SECTION -->

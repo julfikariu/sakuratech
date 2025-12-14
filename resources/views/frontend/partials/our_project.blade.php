@@ -23,13 +23,10 @@
 				<a href="#" aria-label="View Project">
 					<div class="relative">
 						<!-- Image: AVIF/WebP/PNG with lazy load -->
-						<picture>
-							<source srcset="{{ asset('img/projects/p1.avif') }}" type="image/avif">
-							<source srcset="{{ asset('img/projects/p1.webp') }}" type="image/webp">
-							<img src="{{ asset('img/projects/p1.jpg') }}" alt="CommerceHub – ecommerce platform"
+			
+						<img src="{{ asset('frontend/img/ecom_admin.png')}}" alt="CommerceHub – ecommerce platform"
 								loading="lazy" decoding="async" class="w-full h-full object-cover aspect-[16/10]" />
-						</picture>
-
+					
 						<!-- Status chip -->
 						<span
 							class="absolute top-3 left-3 text-xs font-semibold bg-white/90 text-gray-800 px-2.5 py-1 rounded-full">
@@ -68,12 +65,10 @@
 			<article class="group rounded-2xl overflow-hidden bg-gray-50 shadow-sm hover:shadow-xl transition-all">
 				<a href="#" aria-label="View Project">
 					<div class="relative">
-						<picture>
-							<source srcset="{{ asset('img/projects/p2.avif') }}" type="image/avif">
-							<source srcset="{{ asset('img/projects/p2.webp') }}" type="image/webp">
-							<img src="{{ asset('img/projects/p2.jpg') }}" alt="ClinicPro – appointment & EMR"
+						
+                        <img src="{{ asset('frontend/img/ecom_admin.png')}}" alt="ClinicPro – appointment & EMR"
 								loading="lazy" decoding="async" class="w-full h-full object-cover aspect-[16/10]" />
-						</picture>
+						
 						<span
 							class="absolute top-3 left-3 text-xs font-semibold bg-white/90 text-gray-800 px-2.5 py-1 rounded-full">
 							In Progress
@@ -102,12 +97,10 @@
 			<article class="group rounded-2xl overflow-hidden bg-gray-50 shadow-sm hover:shadow-xl transition-all">
 				<a href="#" aria-label="View Project">
 					<div class="relative">
-						<picture>
-							<source srcset="{{ asset('img/projects/p3.avif') }}" type="image/avif">
-							<source srcset="{{ asset('img/projects/p3.webp') }}" type="image/webp">
-							<img src="{{ asset('img/projects/p3.jpg') }}" alt="EduFlow – LMS platform" loading="lazy"
+						
+                        <img src="{{ asset('frontend/img/ecom_admin.png')}}" alt="EduFlow – LMS platform" loading="lazy"
 								decoding="async" class="w-full h-full object-cover aspect-[16/10]" />
-						</picture>
+					
 						<span
 							class="absolute top-3 left-3 text-xs font-semibold bg-white/90 text-gray-800 px-2.5 py-1 rounded-full">
 							Completed
@@ -136,12 +129,10 @@
 			<article class="group rounded-2xl overflow-hidden bg-gray-50 shadow-sm hover:shadow-xl transition-all">
 				<a href="#" aria-label="View Project">
 					<div class="relative">
-						<picture>
-							<source srcset="{{ asset('img/projects/p4.avif') }}" type="image/avif">
-							<source srcset="{{ asset('img/projects/p4.webp') }}" type="image/webp">
-							<img src="{{ asset('img/projects/p4.jpg') }}" alt="LogiTrack – logistics & tracking"
+						
+							<img src="{{ asset('frontend/img/helpdesk.png')}}" alt="LogiTrack – logistics & tracking"
 								loading="lazy" decoding="async" class="w-full h-full object-cover aspect-[16/10]" />
-						</picture>
+						
 						<span
 							class="absolute top-3 left-3 text-xs font-semibold bg-white/90 text-gray-800 px-2.5 py-1 rounded-full">
 							Completed
@@ -171,9 +162,7 @@
 				<a href="#" aria-label="View Project">
 					<div class="relative">
 						<picture>
-							<source srcset="{{ asset('img/projects/p5.avif') }}" type="image/avif">
-							<source srcset="{{ asset('img/projects/p5.webp') }}" type="image/webp">
-							<img src="{{ asset('img/projects/p5.jpg') }}" alt="HRSpace – HR & payroll" loading="lazy"
+							<img src="{{ asset('frontend/img/helpdesk.png')}}" alt="HRSpace – HR & payroll" loading="lazy"
 								decoding="async" class="w-full h-full object-cover aspect-[16/10]" />
 						</picture>
 						<span
@@ -205,9 +194,7 @@
 				<a href="#" aria-label="View Project">
 					<div class="relative">
 						<picture>
-							<source srcset="{{ asset('img/projects/p6.avif') }}" type="image/avif">
-							<source srcset="{{ asset('img/projects/p6.webp') }}" type="image/webp">
-							<img src="{{ asset('img/projects/p6.jpg') }}" alt="Eventix – ticketing platform"
+							<img src="{{ asset('frontend/img/helpdesk.png')}}" alt="Eventix – ticketing platform"
 								loading="lazy" decoding="async" class="w-full h-full object-cover aspect-[16/10]" />
 						</picture>
 						<span
@@ -238,7 +225,7 @@
 
 		<!-- CTA -->
 		<div class="text-center mt-12">
-			<a href="#contact"
+			<a href="{{ route('project') }}"
 				class="inline-flex items-center gap-2 px-6 py-3 rounded-full text-white font-semibold shadow-lg transition hover:-translate-y-0.5"
 				style="background:#5e17eb">
 				Start Your Project <i class="fas fa-arrow-right text-sm"></i>

@@ -1,6 +1,6 @@
 <section id="about" class="py-20 bg-white">
 	<div class="max-w-7xl mx-auto px-6 lg:px-8">
-		<div class="text-center">
+		<div class="text-center" data-aos="fade-up">
 			<!-- Small subtitle -->
 			<p class="text-sm uppercase tracking-widest text-indigo-600 font-semibold">
 				Why Choose Us
@@ -21,7 +21,7 @@
 		<div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
 
 			<!-- Feature 1 -->
-			<div class="flex items-start space-x-4">
+			<div class="flex items-start space-x-4" data-aos="fade-up">
 				<div class="w-16 h-16 px-4 flex items-center justify-center rounded-lg bg-indigo-100 text-indigo-600">
 					<i class="fas fa-code text-2xl"></i>
 				</div>
@@ -33,7 +33,7 @@
 			</div>
 
 			<!-- Feature 2 -->
-			<div class="flex items-start space-x-4">
+			<div class="flex items-start space-x-4" data-aos="fade-up">
 				<div class="w-16 h-16 px-4 flex items-center justify-center rounded-lg bg-pink-100 text-pink-600">
 					<i class="fas fa-lightbulb text-2xl"></i>
 				</div>
@@ -45,7 +45,7 @@
 			</div>
 
 			<!-- Feature 3 -->
-			<div class="flex items-start space-x-4">
+			<div class="flex items-start space-x-4" data-aos="fade-up">
 				<div class="w-16 h-16 px-4 flex items-center justify-center rounded-lg bg-green-100 text-green-600">
 					<i class="fas fa-user-check text-2xl"></i>
 				</div>
@@ -57,7 +57,7 @@
 			</div>
 
 			<!-- Feature 4 -->
-			<div class="flex items-start space-x-4">
+			<div class="flex items-start space-x-4" data-aos="fade-up">
 				<div class="w-16 h-16 px-4 flex items-center justify-center rounded-lg bg-yellow-100 text-yellow-600">
 					<i class="fas fa-tasks text-2xl"></i>
 				</div>
@@ -69,7 +69,7 @@
 			</div>
 
 			<!-- Feature 5 -->
-			<div class="flex items-start space-x-4">
+			<div class="flex items-start space-x-4" data-aos="fade-up">
 				<div class="w-16 h-16 px-4 flex items-center justify-center rounded-lg bg-blue-100 text-blue-600">
 					<i class="fas fa-rocket text-2xl"></i>
 				</div>
@@ -81,7 +81,7 @@
 			</div>
 
 			<!-- Feature 6 -->
-			<div class="flex items-start space-x-4">
+			<div class="flex items-start space-x-4" data-aos="fade-up">
 				<div class="w-16 h-16 px-4 flex items-center justify-center rounded-lg bg-teal-100 text-teal-600">
 					<i class="fas fa-headset text-2xl"></i>
 				</div>

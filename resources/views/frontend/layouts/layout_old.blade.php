@@ -7,23 +7,21 @@
     <title>@yield('title', 'Sakura IT Solutions')</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- AOS for scroll animations (lightweight and easy) -->
+    
+      <!-- AOS for scroll animations (lightweight and easy) -->
     <link rel="preload" href="https://unpkg.com/aos@next/dist/aos.css" as="style">
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-    
+
     <!-- Optional: Font Awesome (consider replacing with inline SVGs/icons for best performance) -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
+
     <!-- Performance hints -->
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://unpkg.com">
-    
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
     <link href="{{ asset('frontend/css/style.css')}}" rel="stylesheet" />
-    
-    {{-- Page styles --}}
-    @stack('styles')
 
     <style>
     :root {
@@ -35,23 +33,24 @@
         --text-color-dark: #333333; /* Dark Text for readability */
     }
 
-      /* Custom scrollbar for a nicer look */
+    /* Custom scrollbar for a nicer look */
 
-        ::-webkit-scrollbar {
-            width: 4px;
-            height: 4px
-        }
+    ::-webkit-scrollbar {
+        width: 4px;
+        height: 4px
+    }
 
-        ::-webkit-scrollbar-track {
-            box-shadow: inset 0 0 5px var(--secondary-color);
-            border-radius: 5px
-        }
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px var(--secondary-color);
+        border-radius: 5px
+    }
 
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary-color);
-            border-radius: 10px
-        }
-
+    ::-webkit-scrollbar-thumb {
+        background: var(--primary-color);
+        border-radius: 10px
+    }
+       
+   
     /* Hero Section Background */
     .hero-background {
         background: var(--primary-color);
@@ -114,8 +113,13 @@
 
 
     /* project */
+
+    
   
 </style>
+
+    {{-- Page styles --}}
+    @stack('styles')
 
 </head>
 
@@ -133,13 +137,7 @@
     @includeIf('frontend.partials.footer')
 
 
-     <!-- SCRIPTS -->
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-    <script>
-        // AOS init
-        AOS.init({ once: true, duration: 600 });
-    </script>
-        <script src="{{ asset('frontend/js/script.js')}}"></script>
+    <script src="{{ asset('frontend/js/script.js')}}"></script>
     {{-- Page scripts --}}
     @stack('scripts')
 </body>

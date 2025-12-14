@@ -16,51 +16,51 @@
 
 		<div class="mt-10 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-8">
 			<!-- one item -->
-			<div class="group flex flex-col items-center">
+			<div class="group flex flex-col items-center" data-aos="fade-up">
 				<i class="devicon-html5-plain colored text-5xl"></i>
 				<span class="mt-3 text-sm text-gray-700">HTML5</span>
 			</div>
 
-			<div class="group flex flex-col items-center">
+			<div class="group flex flex-col items-center" data-aos="fade-up">
 				<i class="devicon-css3-plain colored text-5xl"></i>
 				<span class="mt-3 text-sm text-gray-700">CSS3</span>
 			</div>
 
-			<div class="group flex flex-col items-center">
+			<div class="group flex flex-col items-center" data-aos="fade-up">
 				<i class="devicon-javascript-plain colored text-5xl"></i>
 				<span class="mt-3 text-sm text-gray-700">JavaScript</span>
 			</div>
 
-			<div class="group flex flex-col items-center">
+			<div class="group flex flex-col items-center" data-aos="fade-up">
 				<i class="devicon-jquery-plain colored text-5xl"></i>
 				<span class="mt-3 text-sm text-gray-700">jQuery</span>
 			</div>
 
-			<div class="group flex flex-col items-center">
+			<div class="group flex flex-col items-center" data-aos="fade-up">
 				<i class="devicon-php-plain colored text-5xl"></i>
 				<span class="mt-3 text-sm text-gray-700">PHP</span>
 			</div>
 
-			<div class="group flex flex-col items-center">
+			<div class="group flex flex-col items-center" data-aos="fade-up">
 				<i class="devicon-laravel-plain colored text-5xl"></i>
 				<span class="mt-3 text-sm text-gray-700">Laravel</span>
 			</div>
 
-			<div class="group flex flex-col items-center">
+			<div class="group flex flex-col items-center" data-aos="fade-up">
 				<i class="devicon-mysql-plain colored text-5xl"></i>
 				<span class="mt-3 text-sm text-gray-700">MySQL</span>
 			</div>
 
-			<div class="group flex flex-col items-center">
+			<div class="group flex flex-col items-center" data-aos="fade-up">
 				<i class="devicon-vuejs-plain colored text-5xl"></i>
 				<span class="mt-3 text-sm text-gray-700">Vue.js</span>
 			</div>
-			<div class="group flex flex-col items-center">
+			<div class="group flex flex-col items-center" data-aos="fade-up">
 				<i class="devicon-typescript-plain colored text-5xl"></i>
 				<span class="mt-3 text-sm text-gray-700">TypeScript</span>
 			</div>
 
-			<div class="group flex flex-col items-center">
+			<div class="group flex flex-col items-center" data-aos="fade-up">
 				<div class="flex flex-col items-center">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 54 33" class="w-12 h-12">
 						<path fill="#38BDF8" d="M27 0c-7 0-11.3 3.5-13 10.5 2.6-3.5 5.7-4.9 9.3-4.3 
@@ -77,22 +77,22 @@
 
 			</div>
 
-			<div class="group flex flex-col items-center">
+			<div class="group flex flex-col items-center" data-aos="fade-up">
 				<i class="devicon-bootstrap-plain colored text-5xl"></i>
 				<span class="mt-3 text-sm text-gray-700">Bootstrap</span>
 			</div>
 
-			<div class="group flex flex-col items-center">
+			<div class="group flex flex-col items-center" data-aos="fade-up">
 				<i class="devicon-git-plain colored text-5xl"></i>
 				<span class="mt-3 text-sm text-gray-700">Git</span>
 			</div>
 
-			<div class="group flex flex-col items-center">
+			<div class="group flex flex-col items-center" data-aos="fade-up">
 				<i class="devicon-docker-plain colored text-5xl"></i>
 				<span class="mt-3 text-sm text-gray-700">Docker</span>
 			</div>
 
-			<div class="group flex flex-col items-center">
+			<div class="group flex flex-col items-center" data-aos="fade-up">
 				<i class="devicon-amazonwebservices-plain-wordmark colored text-5xl"></i>
 				<span class="mt-3 text-sm text-gray-700">AWS</span>
 			</div>
