@@ -24,7 +24,8 @@ class HandleInertiaRequests extends Middleware
      */
     public function version(Request $request): ?string
     {
-        return parent::version($request);
+        // return parent::version($request);
+        return null;
     }
 
     /**
@@ -36,6 +37,11 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+
+        if ($request->wantsModal()) {
+            return [];
+        }
+
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
 
         return [
@@ -44,6 +50,10 @@ class HandleInertiaRequests extends Middleware
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $request->user(),
+            ],
+            'flash' => [
+                'message' => fn () => $request->session()->get('flash.message'),
+                'type' => fn () => $request->session()->get('flash.type', 'success'),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];

@@ -29,7 +29,7 @@ function submitForm() {
         form.submit(permissionStore(), {
             onSuccess: () => {
                 form.reset();
-                Toast.fire({ icon: 'success', title: 'Permission created successfully!' });
+                Toast.fire({ icon: 'success', title: 'Permission created xsuccessfully!' });
                 emit('closemodal');
             },
         });

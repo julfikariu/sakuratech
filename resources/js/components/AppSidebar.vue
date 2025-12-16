@@ -14,6 +14,7 @@ import {
 import { dashboard } from '@/routes';
 import { index as contacts } from '@/routes/admin/contacts';
 import { index as permissions } from '@/routes/admin/permission';
+import { index as clients } from '@/routes/admin/clients';
 import { index as roles } from '@/routes/admin/role';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
@@ -44,6 +45,11 @@ const mainNavItems: NavItem[] = [
         title: 'Permissions',
         href: permissions(),
         icon: Key,
+    },
+    {
+        title: 'Clients',
+        href: clients(),
+        icon: User,
     },
 ];
 

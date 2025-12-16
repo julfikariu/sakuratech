@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\ClientController;
 
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
@@ -14,4 +15,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
   
     // Manage Permissions
     Route::resource('permission', PermissionController::class)->except('create', 'show', 'edit');
+
+    // Manage Clients
+    Route::resource('clients', ClientController::class)->names('clients');
 });

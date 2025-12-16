@@ -29,7 +29,7 @@ defineProps<{
                         <BreadcrumbPage>{{ item.title }}</BreadcrumbPage>
                     </template>
                     <template v-else>
-                        <Home class="w-4 h-4" />
+                        <Home v-if="index === 0" class="w-4 h-4" />
                         <BreadcrumbLink as-child>
                             <Link :href="item.href ?? '#'">{{
                                 item.title
