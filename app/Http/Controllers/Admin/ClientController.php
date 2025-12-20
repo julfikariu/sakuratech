@@ -40,13 +40,11 @@ class ClientController extends Controller
     public function store(ClientRequest $request)
     {
         
-
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
         ]);
-
 
         // $user->assignRole('Client');
 
@@ -82,19 +80,72 @@ class ClientController extends Controller
         ]);
     }
 
-    public function update(ClientRequest $request, Client $client)
-    {
-        $client->update($request->validated());
 
-        return redirect()->back()->with('flash', [
-            'message' => 'Client updated successfully!',
-            'type' => 'success'
+    public function edit(Client $client)
+    {
+        $data = [
+            'id'        => $client->id,            
+            'name'      => $client->user->name,
+            'email'     => $client->user->email,
+            'company_name' => $client->company_name,
+            'phone'     => $client->phone,
+            'address'   => $client->address,
+            'website'   => $client->website,
+            'status'    => $client->status,
+        ];
+
+        return Inertia::render('admin/clients/Form', [
+            'client' => $data,
+            'is_edit' => true,
         ]);
+    }
+
+   public function update(ClientRequest $request, Client $client)
+    {
+        try {
+            DB::transaction(function () use ($request, $client) {
+                // Update user
+                $client->user()->update([
+                    'name'  => $request->name,
+                    'email' => $request->email,
+                ]);
+
+                // Update client
+                $client->update([
+                    'company_name' => $request->company_name,
+                    'phone'        => $request->phone,
+                    'address'      => $request->address,
+                    'website'      => $request->website,
+                    'status'       => $request->status,
+                ]);
+            }, config('database.transaction_attempts', 3)); // Configurable attempts
+
+            return redirect()->route('admin.clients.index')->with('flash', [
+                'message' => 'Client updated successfully!',
+                'type' => 'success'
+            ]);
+        } catch (Exception $e) {
+            Log::error('Client update failed', [
+                'client_id' => $client->id,
+                'error' => $e->getMessage()
+            ]);
+
+            return back()->withInput()->with('flash', [
+                'message' => 'Failed to update client. Please try again.',
+                'type' => 'error'
+            ]);
+        }
     }
 
     public function destroy(Client $client): RedirectResponse
     {
+        
+        $client->user->delete();
         $client->delete();
-        return redirect()->back();
+        
+        return redirect()->route('admin.clients.index')->with('flash', [
+            'message' => 'Client deleted successfully!',
+            'type' => 'success'
+        ]);
     }
 }

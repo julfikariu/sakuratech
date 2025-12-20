@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useForm, Link } from '@inertiajs/vue3';
+import { useForm, Link, router } from '@inertiajs/vue3';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import Input from '@/components/ui/input/Input.vue';
@@ -7,25 +7,17 @@ import InputError from '@/components/InputError.vue';
 import { LoaderCircle, MoveLeft, X, Save } from 'lucide-vue-next';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
 import RequiredSign from '@/components/RequiredSign.vue';
-import FlatpickerInput from '@/components/FlatpickerInput.vue';
 import { type BreadcrumbItem } from '@/types';
 import { dashboard } from "@/routes";
 import PageHeader from '@/components/PageHeader.vue';
 import { index as ClientsIndex } from "@/routes/admin/clients";
 import { store as ClientStore } from '@/routes/admin/clients';
-import password from '@/routes/password';
+import { update as ClientUpdate } from '@/routes/admin/clients';
 
 interface Client {
     id: number,
-    name: number | null,
+    name: string,
     email: string,
     company_name: string,
     phone: string,
@@ -36,15 +28,15 @@ interface Client {
 
 interface Props {
     client?: Client | null;
-    is_edit_mode?: boolean | null;
+    is_edit?: boolean | null;
 }
 
 const props = defineProps<Props>();
 
 const form = useForm({
-    id: props.client?.id || null,
+    id: props.client?.id || 0,
     company_name: props.client?.company_name || '',
-    name: props.client?.name || null,
+    name: props.client?.name || '',
     email: props.client?.email || '',
     password: '',
     phone: props.client?.phone || '',
@@ -53,13 +45,10 @@ const form = useForm({
     status: props.client?.status || 'Active',
 });
 
-// Status options
-const statusOptions = ['Active', 'Suspended'];
-
 // Action
 function submitForm() {
-    if (props.is_edit_mode) {
-        form.put(route('client.update', props.client?.id), {
+    if (props.is_edit) {
+        form.put(ClientUpdate(form.id).url, {
             onSuccess: () => {
                 form.reset();
             },
@@ -72,6 +61,10 @@ function submitForm() {
             },
         });
     }
+}
+
+function goBack() {
+    router.visit(ClientsIndex().url);
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -92,7 +85,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     <AppLayout>
         <div class="p-6">
             <PageHeader title="Clients" description="Create" :breadcrumbs="breadcrumbs">
-                <Button variant="reset" @click="">
+                <Button variant="reset" @click="goBack()">
                     <MoveLeft /> Back
                 </Button> 
             </PageHeader>
@@ -127,7 +120,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                         </div>
 
                         <!-- Password -->
-                        <div v-if="props.is_edit_mode === false" class="flex items-center">
+                        <div v-if="props.is_edit === false" class="flex items-center">
                             <Label for="password" class="w-1/8 justify-end mr-4"> <RequiredSign /> Password :</Label>
                             <div class="w-7/8">
                                 <Input v-model="form.password" id="password" type="password" placeholder="********" />
@@ -179,7 +172,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                                 variant="save"
                                 :disabled="form.processing">
                                 <LoaderCircle v-if="form.processing" class="w-4 h-4 animate-spin" />
-                               <Save v-if="!form.processing" />  {{ props.is_edit_mode ? 'Update' : 'Create' }}
+                               <Save v-if="!form.processing" />  {{ props.is_edit ? 'Update' : 'Create' }}
                             </Button>
 
                             <Link :href="ClientsIndex().url">

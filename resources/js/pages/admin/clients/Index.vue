@@ -20,9 +20,13 @@ import NoResults from '@/components/NoResults.vue';
 import type { Client, PaginationLink } from '@/types/models';
 import Pagination from '@/components/Pagination.vue';
 import { create as ClientCreate } from '@/routes/admin/clients';
-import { show as ClientShow } from '@/routes/admin/clients';
+import { show as clientShow } from '@/routes/admin/clients';
+import { edit as clientEdit } from '@/routes/admin/clients';
+import { destroy as clientDelete } from '@/routes/admin/clients';
 import Search from './Search.vue';
 import ModalLink from '@/components/ModalLink.vue';
+import { deleteBySwal } from '@/composables/useSwal';
+
 
 interface Flash {
     message?: string;
@@ -102,14 +106,17 @@ const breadcrumbs: BreadcrumbItem[] = [
                             <TableCell>{{ item.website }}</TableCell>
                             <TableCell class="text-right flex gap-2 justify-end">
 
-                                <ModalLink :href="ClientShow(item.id).url" :itemid="item.id"
+                                <ModalLink :href="clientShow(item.id).url" :itemid="item.id"
                                     variant="assign" :size="'sm'">
                                     <Eye class="w-4 h-4" />
                                 </ModalLink>
-                                <Button variant="edit" size="sm">
-                                    <SquarePen class="w-4 h-4" />
-                                </Button>
-                                <Button variant="delete" size="sm">
+                                <Link :href="clientEdit(item.id).url">
+                                    <Button variant="edit" size="sm">
+                                        <SquarePen class="w-4 h-4" />
+                                    </Button>
+                                </Link>
+                                <Button @click="deleteBySwal(clientDelete({ id: item.id }).url, 'client')"
+                                    variant="delete" size="sm" title="Delete permission">
                                     <Trash2Icon class="w-4 h-4" />
                                 </Button>
                             </TableCell>

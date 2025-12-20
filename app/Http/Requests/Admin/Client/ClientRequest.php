@@ -22,6 +22,7 @@ class ClientRequest extends FormRequest
      */
     public function rules(): array
     {
+  
         return [
             'company_name'=>['required', 'string', 'max:255'],
             'email'=>['required', 'string', 'email', 'max:255', 
