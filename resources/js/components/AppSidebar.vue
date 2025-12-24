@@ -15,13 +15,15 @@ import { dashboard } from '@/routes';
 import { index as contacts } from '@/routes/admin/contacts';
 import { index as permissions } from '@/routes/admin/permission';
 import { index as clients } from '@/routes/admin/clients';
+import { index as projects } from '@/routes/admin/projects';
 import { index as roles } from '@/routes/admin/role';
+import { index as invoices } from '@/routes/admin/invoices';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import {
     Key,
     LayoutGrid,
-    User
+    User, Receipt
 } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
@@ -50,6 +52,16 @@ const mainNavItems: NavItem[] = [
         title: 'Clients',
         href: clients(),
         icon: User,
+    },
+    {
+        title: 'Projects',
+        href: projects(),
+        icon: User,
+    },
+    {
+        title: 'Invoices',
+        href: invoices(),
+        icon: Receipt,
     },
 ];
 

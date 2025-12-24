@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('start_date')->nullable();
             $table->date('deadline')->nullable();
             $table->date('estimate_delivery_date')->nullable();
-            $table->enum('status', ['Running', 'Completed', 'Pending'])->default('Pending');
+            $table->enum('status', ['Active', 'Completed', 'Pending'])->default('Pending');
             $table->unsignedTinyInteger('progress')->default(0);
             $table->timestamps();
         });

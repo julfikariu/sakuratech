@@ -16,7 +16,7 @@ function handleClick(itemId?: number) {
 }
 const isLoading = computed(() => loadingId.value === props.itemid)
 
-const buttonVariant = computed<"default" | "cancel" | "destructive" | "outline" | "secondary" | "ghost" | "link" | "green" | "yellow" | "assign" | "edit" | "delete">(() => {
+const buttonVariant = computed<"default" | "cancel" | "destructive" | "outline" | "secondary" | "ghost" | "link" | "save" | "yellow" | "assign" | "edit" | "delete">(() => {
     return props.variant ?? 'default';
 });
 
@@ -24,7 +24,7 @@ const buttonVariant = computed<"default" | "cancel" | "destructive" | "outline" 
 
 <template>
     <!-- :disabled="isLoading" -->
-    <Button variant="show" :size="props.size" type="button" @click="handleClick(props.itemid)" > 
+    <Button :variant="buttonVariant" :size="props.size" @click="handleClick(props.itemid)" > 
         <!-- <template v-if="isLoading">
             <LoaderCircle class="w-4 h-4 animate-spin" />
         </template> -->
