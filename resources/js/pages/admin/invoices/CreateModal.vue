@@ -54,7 +54,7 @@ const form = useForm({
     issue_date: props.invoice?.issue_date || '',
     due_date: props.invoice?.due_date || '',
     notes: props.invoice?.notes || '',
-    status: props.invoice?.status || 'Pending',
+    status: props.invoice?.status || 'draft',
 });
 
 watch(() => form.client_id, (newClientId) => {
@@ -75,7 +75,6 @@ function submitForm() {
     form.post(invoiceStore.url(), {           
         onSuccess: () => {
             form.reset();
-            files.value = [];
             close();
             modal.value=null; 
         }
@@ -166,20 +165,15 @@ function submitForm() {
                     <div class="flex items-center gap-3">
                         <Label class="w-1/8 text-right justify-end">Status :</Label>
                         <div class="w-7/8">
-                            <RadioGroup v-model="form.status" defaultValue="Pending" class="flex gap-6">
+                            <RadioGroup v-model="form.status" defaultValue="draft" class="flex gap-6">
                                 <div class="flex items-center gap-2">
-                                    <RadioGroupItem value="Pending" id="inactive" />
-                                    <Label for="inactive">Pending</Label>
+                                    <RadioGroupItem value="draft" id="inactive" />
+                                    <Label for="inactive">Draft</Label>
                                 </div>
                                 <div class="flex items-center gap-2">
-                                    <RadioGroupItem value="Active" id="active" />
-                                    <Label for="active">Active</Label>
-                                </div>
-                               
-                                 <div class="flex items-center gap-2">
-                                    <RadioGroupItem value="Completed" id="inactive" />
-                                    <Label for="inactive">Completed</Label>
-                                </div>
+                                    <RadioGroupItem value="paid" id="paid" />
+                                    <Label for="paid">Paid</Label>
+                                </div>                                                        
                             </RadioGroup>
                             <InputError :message="form.errors.status" />
                         </div>
@@ -191,7 +185,7 @@ function submitForm() {
                         <div class="flex gap-2 w-1/12">
                             <Button type="submit"  variant="save" :disabled="form.processing">
                                 <LoaderCircle v-if="form.processing" class="w-4 h-4 animate-spin mr-2" />
-                                <Save v-else class="w-4 h-4" /> Save
+                                <Save v-else class="w-4 h-4" /> Create
                             </Button>
                             <Button type="button" class="cursor-pointer" variant="secondary"
                                 @click.prevent="close">

@@ -6,6 +6,7 @@ use App\Models\Client;
 use App\Models\Invoice;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\Admin\Invoice\InvoiceRequest;
 use App\Http\Requests\Admin\Project\ProjectRequest;
 
 class InvoiceController extends Controller
@@ -48,26 +49,25 @@ class InvoiceController extends Controller
         ]);
     }
 
-    public function store(ProjectRequest $request)
+    public function store(InvoiceRequest $request)
     {
-        Project::create([
-            'title'       => $request->title,
+        $invoice = Invoice::create([
+            'inv_unique_id' => 'INV-' . strtoupper(uniqid()),
             'client_id'   => $request->client_id,
-            'type'        => $request->type,
-            'description' => $request->description,
-            'start_date'  => $request->start_date,
-            'deadline'    => $request->deadline,
+            'project_id'  => $request->project_id,
+            'issue_date'  => $request->issue_date,
+            'due_date'    => $request->due_date,
+            'notes'       => $request->notes,
             'status'      => $request->status,
-            'progress'    => $request->progress,
         ]);
 
-        return redirect()->route('admin.projects.index')->with('flash', [
-            'message' => 'Project created successfully!',
+        return redirect()->route('admin.projects.edit', $invoice->id)->with('flash', [
+            'message' => 'Invoice created successfully!',
             'type' => 'success'
         ]);
     }
 
-    public function show(Project $project)
+    public function show(Invoice $project)
     {
         $data = [
             'id'        => $project->id,
@@ -86,7 +86,7 @@ class InvoiceController extends Controller
     }
 
 
-    public function edit(Project $project)
+    public function edit(Invoice $invoice)
     {
         $clients = Client::all()->map(function ($client) {
             return [
@@ -96,39 +96,38 @@ class InvoiceController extends Controller
         });
 
         $data = [
-            'id'        => $project->id,            
-            'title'     => $project->title,
-            'client_id' => $project->client_id,
-            'description' => $project->description,
-            'start_date'=> $project->start_date?->format('Y-m-d'),
-            'deadline'  => $project->deadline?->format('Y-m-d'),
-            'progress'  => (int) $project->progress,
-            'status'    => $project->status,
+            'id'         => $invoice->id,            
+            'client_id'  => $invoice->client_id,
+            'project_id' => $invoice->project_id,
+            'issue_date' => $invoice->issue_date,
+            'due_date'   => $invoice->due_date,
+            'notes'      => $invoice->notes,
+            'status'     => $invoice->status,
         ];
 
-        return Inertia::render('admin/projects/Form', [
-            'project' => $data,
+        return Inertia::render('admin/invoices/Edit', [
+            'invoice' => $data,
+            'invoiceItems' => $invoice->items ?? [],
             'clients' => $clients,
-            'is_edit' => true,
         ]);
     }
 
-   public function update(ProjectRequest $request, Project $project)
+   public function update(InvoiceRequest $request, Invoice $project)
     {   
         $project->update($request->validated());
 
         return redirect()->route('admin.projects.index')->with('flash', [
-            'message' => 'Project updated successfully!',
+            'message' => 'Invoice updated successfully!',
             'type' => 'success'
         ]);
     }
 
-    public function destroy(Project $project): RedirectResponse
+    public function destroy(Invoice $project): RedirectResponse
     {
         $project->delete();
         
         return redirect()->route('admin.projects.index')->with('flash', [
-            'message' => 'Project deleted successfully!',
+            'message' => 'Invoice deleted successfully!',
             'type' => 'success'
         ]);
     }

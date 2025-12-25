@@ -114,9 +114,12 @@ const breadcrumbs: BreadcrumbItem[] = [
                                         <Eye class="w-4 h-4" />
                                     </Button>
                                 </Link>
-                                <ModalLink :href="invoiceEdit(item.id).url" variant="edit" :size="'sm'">
-                                    <SquarePen class="w-4 h-4" />
-                                </ModalLink>
+
+                                 <Link :href="invoiceEdit(item.id).url">
+                                    <Button variant="edit" size="sm">
+                                        <SquarePen class="w-4 h-4" />
+                                    </Button>
+                                </Link>                       
                                 <Button @click="deleteBySwal(invoiceDelete({ invoice: item.id }).url, 'invoice')"
                                     variant="delete" size="sm" title="Delete invoice">
                                     <Trash2Icon class="w-4 h-4" />

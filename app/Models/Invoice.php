@@ -25,4 +25,9 @@ class Invoice extends Model
         'issue_date' => 'date',
         'due_date' => 'date',
     ];
+
+    public function items()
+    {
+        return $this->hasMany(InvoiceItem::class, 'invoice_id');
+    }
 }
