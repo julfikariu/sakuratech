@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Admin;
 use Inertia\Inertia;
 use App\Models\Client;
 use App\Models\Invoice;
+use App\Models\InvoiceItem;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\Admin\Invoice\InvoiceRequest;
-use App\Http\Requests\Admin\Project\ProjectRequest;
+use Illuminate\Support\Facades\DB; // for transactions
+use App\Http\Requests\Admin\Invoice\InvoiceUpdateRequest;
 
 class InvoiceController extends Controller
 {
@@ -15,18 +17,18 @@ class InvoiceController extends Controller
     {
         $paginator = Invoice::paginate(10)->withQueryString();
 
-        $paginator->getCollection()->transform(function ($project) {
+        $paginator->getCollection()->transform(function ($invoice) {
             return [
-                'id'           => $project->id,
-                'inv_unique_id' => $project->inv_unique_id,
-                'client_id'    => $project->client_id,
-                'project_id'   => $project->project_id,
-                'amount'       => $project->amount,
-                'issue_date'   => $project->issue_date?->format('d M Y'),
-                'due_date'     => $project->due_date?->format('d M Y'),
-                'notes'        => $project->notes,
-                'status'       => $project->status,
-                'created_at'   => $project->created_at?->format('d M Y, h:i A'),
+                'id'           => $invoice->id,
+                'inv_unique_id' => $invoice->inv_unique_id,
+                'client_id'    => $invoice->client_id,
+                'invoice_id'   => $invoice->invoice_id,
+                'amount'       => $invoice->amount,
+                'issue_date'   => $invoice->issue_date?->format('d M Y'),
+                'due_date'     => $invoice->due_date?->format('d M Y'),
+                'notes'        => $invoice->notes,
+                'status'       => $invoice->status,
+                'created_at'   => $invoice->created_at?->format('d M Y, h:i A'),
             ];
         });
 
@@ -54,34 +56,34 @@ class InvoiceController extends Controller
         $invoice = Invoice::create([
             'inv_unique_id' => 'INV-' . strtoupper(uniqid()),
             'client_id'   => $request->client_id,
-            'project_id'  => $request->project_id,
+            'invoice_id'  => $request->invoice_id,
             'issue_date'  => $request->issue_date,
             'due_date'    => $request->due_date,
             'notes'       => $request->notes,
             'status'      => $request->status,
         ]);
 
-        return redirect()->route('admin.projects.edit', $invoice->id)->with('flash', [
+        return redirect()->route('admin.invoices.edit', $invoice->id)->with('flash', [
             'message' => 'Invoice created successfully!',
             'type' => 'success'
         ]);
     }
 
-    public function show(Invoice $project)
+    public function show(Invoice $invoice)
     {
         $data = [
-            'id'        => $project->id,
-            'client_id'   => $project->client_id,
-            'title' => $project->title,
-            'description'     => $project->description,
-            'start_date'   => $project->start_date,
-            'deadline'   => $project->deadline,
-            'progress'    => $project->progress,
-            'status'    => $project->status,
-            'created_at' => $project->created_at?->format('d M Y, h:i A'),
+            'id'        => $invoice->id,
+            'client_id'   => $invoice->client_id,
+            'title' => $invoice->title,
+            'description'     => $invoice->description,
+            'start_date'   => $invoice->start_date,
+            'deadline'   => $invoice->deadline,
+            'progress'    => $invoice->progress,
+            'status'    => $invoice->status,
+            'created_at' => $invoice->created_at?->format('d M Y, h:i A'),
         ];
-        return Inertia::render('admin/projects/Details', [
-            'project' => $data,
+        return Inertia::render('admin/invoices/Details', [
+            'invoice' => $data,
         ]);
     }
 
@@ -98,9 +100,10 @@ class InvoiceController extends Controller
         $data = [
             'id'         => $invoice->id,            
             'client_id'  => $invoice->client_id,
-            'project_id' => $invoice->project_id,
-            'issue_date' => $invoice->issue_date,
-            'due_date'   => $invoice->due_date,
+            'invoice_id' => $invoice->invoice_id,
+            'issue_date' => $invoice->issue_date->format('Y-m-d'),
+            'due_date'   => $invoice->due_date->format('Y-m-d'),
+            'amount'     => $invoice->amount,
             'notes'      => $invoice->notes,
             'status'     => $invoice->status,
         ];
@@ -112,21 +115,77 @@ class InvoiceController extends Controller
         ]);
     }
 
-   public function update(InvoiceRequest $request, Invoice $project)
-    {   
-        $project->update($request->validated());
+   public function update(InvoiceUpdateRequest $request, Invoice $invoice)
+    {
 
-        return redirect()->route('admin.projects.index')->with('flash', [
+        // Use transaction to keep invoice and items in sync
+        DB::transaction(function () use ($request, $invoice) {
+            // Update invoice main fields
+            $invoice->update([
+                'issue_date'  => $request->issue_date,
+                'due_date'    => $request->due_date,
+                'notes'       => $request->notes,
+            ]);
+
+            $items = $request->get('items', []);
+
+            $existingIds = $invoice->items()->pluck('id')->toArray();
+            $processedIds = [];
+            $totalAmount = 0;
+
+            foreach ($items as $item) {
+                $qty = $item['qty'] ?? ($item['quantity'] ?? 0);
+                $rate = $item['rate'] ?? ($item['price'] ?? 0);
+                $lineTotal = $qty * $rate;
+                $totalAmount += $lineTotal;
+
+                if (!empty($item['id'])) {
+                    // Update existing item
+                    $invoice->items()->where('id', $item['id'])->update([
+                        'description' => $item['description'],
+                        'price' => $rate,
+                        'quantity' => $qty,
+                        'total' => $lineTotal,
+                    ]);
+
+                    $processedIds[] = $item['id'];
+                } else {
+                    // Create new item
+                    $created = $invoice->items()->create([
+                        'description' => $item['description'],
+                        'price' => $rate,
+                        'quantity' => $qty,
+                        'total' => $lineTotal,
+                    ]);
+
+                    $processedIds[] = $created->id;
+                }
+            }
+
+            // Delete removed items
+            $toDelete = array_diff($existingIds, $processedIds);
+            if (!empty($toDelete)) {
+                InvoiceItem::whereIn('id', $toDelete)->delete();
+            }
+
+            // Update invoice amount (sum of item totals)
+            $invoice->amount = $totalAmount;
+            $invoice->save();
+        });
+
+        return redirect()->route('admin.invoices.index')->with('flash', [
             'message' => 'Invoice updated successfully!',
             'type' => 'success'
         ]);
     }
 
-    public function destroy(Invoice $project): RedirectResponse
+    public function destroy(Invoice $invoice): RedirectResponse
     {
-        $project->delete();
+
+    
+        $invoice->delete();
         
-        return redirect()->route('admin.projects.index')->with('flash', [
+        return redirect()->route('admin.invoices.index')->with('flash', [
             'message' => 'Invoice deleted successfully!',
             'type' => 'success'
         ]);

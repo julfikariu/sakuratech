@@ -17,4 +17,6 @@ class InvoiceItem extends Model
         'total',
     ];
 
+    public $timestamps = false;
+
 }

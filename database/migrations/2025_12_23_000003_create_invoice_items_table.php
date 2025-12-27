@@ -19,6 +19,8 @@ return new class extends Migration
             $table->integer('unit')->default(1);
             $table->decimal('price', 15, 2)->default(0);
             $table->decimal('total', 15, 2)->default(0);
+
+            $table->foreign('invoice_id')->references('id')->on('invoices')->onDelete('cascade');
         });
     }
 

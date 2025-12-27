@@ -1,29 +1,27 @@
 <script setup lang="ts">
 import PageHeader from '@/components/PageHeader.vue';
+import Badge from '@/components/ui/badge/Badge.vue';
+import Button from '@/components/ui/button/Button.vue';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardTitle
+} from '@/components/ui/card';
+import Input from '@/components/ui/input/Input.vue';
+import InputError from '@/components/InputError.vue';
+import Label from '@/components/ui/label/Label.vue';
+import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from "@/routes";
 import {
     index as invoiceIndex
 } from '@/routes/admin/invoices';
 import { type BreadcrumbItem } from '@/types';
-import { computed, ref, Text } from 'vue';
-import {
-    Card,
-    CardAction,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card'
-import Label from '@/components/ui/label/Label.vue';
-import Input from '@/components/ui/input/Input.vue';
-import Badge from '@/components/ui/badge/Badge.vue';
-import Button from '@/components/ui/button/Button.vue';
-import { Textarea } from '@/components/ui/textarea';
-import { X, SaveIcon, Plus } from 'lucide-vue-next';
-
-
+import { useForm } from '@inertiajs/vue3';
+import { Plus, SaveIcon, X } from 'lucide-vue-next';
+import { computed, ref, watch } from 'vue';
+import { update as invoiceUpdate } from '@/routes/admin/invoices';
 
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -43,36 +41,25 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 // Form data
 const invoiceNumber = ref('INV-000001');
-const invoiceDate = ref(new Date().toISOString().split('T')[0]);
-const dueDate = ref('');
-const clientName = ref('');
-const clientEmail = ref('');
-const invoiceItems = ref<InvoiceItem[]>([
-    {
-        id: '1',
-        description: 'Item',
-        qty: null,
-        unit: '$',
-        rate: null,
-    },
-]);
 
 interface Invoice {
-    id: number;
+    id: number | null;
     client_id: number;
     project_id: number;
     issue_date: string;
     due_date: string;
+    amount: number;
     status: string;
     notes: string;
 }
 
 interface InvoiceItem {
-    id: string;
+    id: string | null;
     description: string;
-    qty: number | null;
+    qty: number;
     unit: string;
-    rate: number | null;
+    rate: number;
+    total: number;
 }
 
 interface Client {
@@ -80,16 +67,104 @@ interface Client {
     company_name: string;
 }
 
-
-
 interface Props { 
     invoice: Invoice[];
     clients: Client[];
-    invoiceItems?: InvoiceItem[];
-    
+    invoiceItems?: InvoiceItem[];    
 }
 
 const props = defineProps<Props>();
+
+const form = useForm({
+    id: props.invoice.id || 0,
+    client_id: props.invoice.client_id || null,
+    project_id: props.invoice.project_id || null,
+    issue_date: props.invoice.issue_date || '',
+    due_date: props.invoice.due_date || '',
+    amount: props.invoice.amount || 0,
+    status: (props.invoice.status && typeof props.invoice.status === 'string') ? props.invoice.status.toLowerCase() : 'draft',
+    notes: props.invoice.notes || '',
+    items: props.invoiceItems || [],
+});
+
+// Initialize invoiceItems from props (map backend fields to UI fields)
+const invoiceItems = ref<InvoiceItem[]>(
+    (props.invoiceItems && props.invoiceItems.length > 0)
+        ? props.invoiceItems.map((i: any) => ({
+            id: i.id ?? null,
+            description: i.description ?? '',
+            qty: i.quantity ?? i.qty ?? 1,
+            unit: i.unit ?? '$',
+            rate: i.price ?? i.rate ?? 0,
+            total: i.total ?? ((i.quantity ?? i.qty ?? 1) * (i.price ?? i.rate ?? 0)),
+          }))
+        : [
+            {
+                id: null,
+                description: 'Item',
+                qty: 1,
+                unit: '$',
+                rate: 0,
+                total: 0,
+            },
+          ]
+);
+
+const addItem = () => {
+    invoiceItems.value.push({
+        id: null,
+        description: '',
+        qty: 1,
+        unit: '$',
+        rate: 0,
+        total: 0,
+    });
+};
+
+const invoiceTotal = computed(() => {
+    return invoiceItems.value.reduce((s, item) => s + ((Number(item.qty) || 0) * (Number(item.rate) || 0)), 0);
+});
+
+// items total how to calculate
+const itemTotal = (item: InvoiceItem) => {
+    return (Number(item.qty) || 0) * (Number(item.rate) || 0);
+};
+
+watch(invoiceItems, (newItems) => {
+    // Update totals for each item
+    newItems.forEach((item) => {
+        item.total = itemTotal(item);
+    });
+}, { deep: true });
+
+
+// keep form.amount in sync
+watch(invoiceTotal, (val) => {
+    form.amount = Number(val.toFixed(2));
+});
+
+function save() {
+    // prepare items payload
+    form.items = invoiceItems.value.map(i => ({
+        id: i.id,
+        description: i.description,
+        qty: i.qty,
+        unit: i.unit,
+        rate: i.rate,
+        total: i.total,
+    }));
+
+    form.put(invoiceUpdate.url(form.id), {
+        preserveScroll: true,
+        onSuccess: () => {
+            // optional: show notification or redirect handled by controller
+        }
+    });
+}
+
+const removeItem = (index: number) => {
+  invoiceItems.value.splice(index, 1);
+};
 
 </script>
 
@@ -142,12 +217,14 @@ const props = defineProps<Props>();
                                     <div class="space-y-4 w-full">
                                         <div class="flex items-center gap-3">
                                             <Label class="w-24 text-muted-foreground">Invoice Date</Label>
-                                            <Input v-model="invoiceDate" type="date" class="w-40" />
+                                            <Input v-model="form.issue_date" type="date" class="w-40" />
+                                            <InputError :message="form.errors.issue_date" />
                                         </div>
 
                                         <div class="flex items-center gap-3">
                                             <Label class="w-24 text-muted-foreground">Due Date</Label>
-                                            <Input v-model="dueDate" type="date" class="w-40" />
+                                            <Input v-model="form.due_date" type="date" class="w-40" />
+                                            <InputError :message="form.errors.due_date" />
                                         </div>
                                     </div>
                                 </div>
@@ -177,44 +254,45 @@ const props = defineProps<Props>();
                             <table class="w-full text-sm">
                                 <thead>
                                     <tr class="border-b border-gray-300">
-                                    <th class="text-center py-3 px-4 font-semibold text-gray-700 w-12"></th>
+                                        <th class="text-center py-3 px-4 font-semibold text-gray-700 w-12"></th>
                                         <th class="text-left py-3 px-4 font-semibold text-gray-700">Description</th>
                                         <th class="text-center py-3 px-4 font-semibold text-gray-700 w-20">Qty</th>
                                         <th class="text-center py-3 px-4 font-semibold text-gray-700 w-20">Unit</th>
                                         <th class="text-right py-3 px-4 font-semibold text-gray-700 w-24">Rate</th>
-                                        <th class="text-right py-3 px-4 font-semibold text-gray-700 w-24">Total</th>
-                                        
+                                        <th class="text-right py-3 px-4 font-semibold text-gray-700 w-24">Total</th>                                        
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr  class="border-b border-gray-200 hover:bg-gray-50">
+                                    <tr  v-for="(invitem, index) in invoiceItems" :key="invitem.id ?? index"  class="border-b border-gray-200 hover:bg-gray-50">
+                                        <input type="hidden" name="item_id" :value="invitem.id"/>
                                         <td class="py-3 px-4 text-center">
-                                            <Button variant="delete" size="sm" title="Delete">
+                                            <Button  v-if="index !== 0"  @click="removeItem(index)" variant="delete" size="sm" title="Delete">
                                                 <X class="w-4 h-4" />
                                             </Button>
                                         </td>
                                         <td class="py-3 px-4">
-                                            <input type="text"
+                                            <input type="text" v-model="invitem.description"
                                                 class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                 placeholder="Item description" />
+                                            <InputError :message="form.errors['items.' + index + '.description']" />
                                         </td>
                                         <td class="py-3 px-4">
-                                            <input  type="number"
+                                            <input  type="number" v-model="invitem.qty"
                                                 class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-center"
                                                 placeholder="0" />
                                         </td>
                                         <td class="py-3 px-4">
-                                            <input type="text"
+                                            <input type="text" v-model="invitem.unit"
                                                 class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-center"
                                                 placeholder="$" />
                                         </td>
                                         <td class="py-3 px-4">
-                                            <input type="number"
+                                            <input type="number" v-model="invitem.rate"
                                                 class="w-full px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-right"
                                                 placeholder="0.00" />
-                                        </td>
+                                        </td>                                        
                                         <td class="py-3 px-2 text-right font-semibold text-gray-700 bg-gray-100">
-                                            $0.00
+                                            {{ (invitem.qty * invitem.rate).toFixed(2) }}
                                         </td>
                                        
                                     </tr>
@@ -222,25 +300,17 @@ const props = defineProps<Props>();
                             </table>
 
                             <div class="flex justify-start mt-4">
-                                <Button type="button" variant="edit" class="gap-0">
+                                <Button @click="addItem" type="button" variant="edit" class="gap-0">
                                     <Plus class="w-4 h-4 mr-2" /> Add New
                                 </Button>
                             </div> 
 
 
                             <div class="flex justify-end mt-6">
-                                <div class="w-1/3">
-                                    <div class="flex justify-between items-center mb-2">
-                                        <span class="text-gray-700 font-medium">Subtotal:</span>
-                                        <span class="font-semibold text-gray-700">$0.00</span>
-                                    </div>
-                                    <div class="flex justify-between items-center mb-2">
-                                        <span class="text-gray-700 font-medium">Tax (0%):</span>
-                                        <span class="font-semibold text-gray-700">$0.00</span>
-                                    </div>
-                                    <div class="flex justify-between items-center border-t pt-2 mt-2">
+                                <div class="w-1/3">                                   
+                                    <div class="flex justify-between items-center pt-2 mt-2">
                                         <span class="text-gray-900 font-bold">Total:</span>
-                                        <span class="font-bold text-gray-900">$0.00</span>
+                                        <span class="font-bold text-gray-900">${{ invoiceTotal.toFixed(2) }}</span>
                                     </div>
                                 </div> 
                             </div>
@@ -250,7 +320,7 @@ const props = defineProps<Props>();
                         <!-- Invoice Terms -->
                         <div class="mt-8 mb-8">
                             <Label class="mb-2 block">Invoice Terms</Label>
-                            <Textarea class="h-24 w-80" placeholder="Add payment terms, notes, or conditions" />
+                            <Textarea v-model="form.notes" class="h-24 w-80" placeholder="Add payment terms, notes, or conditions" />
                         </div>
 
                         <!-- Action Buttons -->
@@ -258,8 +328,9 @@ const props = defineProps<Props>();
                             <Button type="button" variant="outline" class="px-6 py-2">                                
                                 Exit Editing Mode
                             </Button>
-                            <Button type="submit" variant="save" class="gap-0">
-                               <SaveIcon class="w-4 h-4 mr-2" /> Save Changes
+                            <Button type="button" variant="save" class="gap-0" :disabled="form.processing" @click.prevent="save">
+                               <SaveIcon class="w-4 h-4 mr-2" /> <span v-if="!form.processing">Save Changes</span>
+                               <span v-else class="opacity-70">Saving...</span>
                             </Button>
                         </div>
 

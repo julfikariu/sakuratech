@@ -5,7 +5,7 @@ namespace App\Http\Requests\Admin\Invoice;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class InvoiceRequest extends FormRequest
+class InvoiceUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,13 +23,10 @@ class InvoiceRequest extends FormRequest
     public function rules(): array
     {
 
-        return [    
-            'client_id'=>['required', 'exists:clients,id'],
-            'project_id'=>['required', 'exists:projects,id'],      
+        return [     
             'issue_date'=>['required', 'date'],
             'due_date'=>['required', 'date', 'after_or_equal:issue_date'],
             'notes'=>['nullable', 'string'],        
-            'status'=>['required', 'in:draft,paid'],
 
             // Invoice items validation
             'items' => ['nullable', 'array'],
@@ -48,8 +45,6 @@ class InvoiceRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'client_id.required' => 'The client field is required.',
-            'project_id.required' => 'The project field is required.',
             'due_date.after_or_equal' => 'The due date must be a date after or equal to the issue date.',
             'items.*.description.required' => 'Each item must have a description.',
             'items.*.qty.required' => 'Each item must have a quantity.',

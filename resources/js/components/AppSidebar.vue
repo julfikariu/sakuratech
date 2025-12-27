@@ -18,12 +18,13 @@ import { index as clients } from '@/routes/admin/clients';
 import { index as projects } from '@/routes/admin/projects';
 import { index as roles } from '@/routes/admin/role';
 import { index as invoices } from '@/routes/admin/invoices';
+import { index as payments } from '@/routes/admin/payments';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import {
     Key,
-    LayoutGrid,
-    User, Receipt
+    LayoutGrid, ContactRound, ListChecks,
+    User, Receipt, WalletCards, SquareKanban
 } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
@@ -36,12 +37,12 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Contacts',
         href: contacts(),
-        icon: User,
+        icon: ContactRound,
     },
     {
         title: 'Roles',
         href: roles(),
-        icon: User,
+        icon: ListChecks,
     },
     {
         title: 'Permissions',
@@ -56,12 +57,17 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Projects',
         href: projects(),
-        icon: User,
+        icon: SquareKanban,
     },
     {
         title: 'Invoices',
         href: invoices(),
         icon: Receipt,
+    },
+    {
+        title: 'Payments',
+        href: payments(),
+        icon: WalletCards,
     },
 ];
 

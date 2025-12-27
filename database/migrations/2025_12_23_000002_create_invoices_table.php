@@ -22,7 +22,11 @@ return new class extends Migration
             $table->date('due_date')->nullable();
             $table->string('terms')->nullable();
             $table->text('notes')->nullable();
-            $table->timestamps();           
+            $table->timestamps();   
+            
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
+            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
+            
         });
     }
 
