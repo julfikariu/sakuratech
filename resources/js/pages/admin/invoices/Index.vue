@@ -20,11 +20,12 @@ import NoResults from '@/components/NoResults.vue';
 import type { PaginationLink } from '@/types/models';
 import Pagination from '@/components/Pagination.vue';
 import { create as invoiceCreate } from '@/routes/admin/invoices';
-import { show as projectShow } from '@/routes/admin/invoices';
+import { show as invoiceShow } from '@/routes/admin/invoices';
 import { edit as invoiceEdit } from '@/routes/admin/invoices';
 import { destroy as invoiceDelete } from '@/routes/admin/invoices';
 import { download as invoiceDownload } from '@/routes/admin/invoices';
 import ModalLink from '@/components/ModalLink.vue';
+import StatusBadge from '@/components/StatusBadge.vue';
 import { deleteBySwal } from '@/composables/useSwal';
 
 interface Flash {
@@ -35,11 +36,12 @@ interface Flash {
 interface Invoice {
     id: number;
     inv_unique_id: string;
-    client_id: number;
-    project_id: number;
+    client: string | null;
+    project: string | null;
     amount: number;
     issue_date: string;
     due_date: string;
+    status: string;
 }
 
 interface PaginatedInvoices {
@@ -104,19 +106,21 @@ function downloadPdf(id: number) {
                             <TableHead>Project</TableHead>
                             <TableHead>Issue Date</TableHead>
                             <TableHead>Due Date</TableHead>
+                            <TableHead>Status</TableHead>
                             <TableHead class="text-right">Actions</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         <TableRow v-for="item in props.invoices.data" :key="item.id">
                             <TableCell>{{ item.inv_unique_id }}</TableCell>
-                            <TableCell>{{ item.client_id }}</TableCell>
-                            <TableCell>{{ item.project_id }}</TableCell>
+                            <TableCell>{{ item.client }}</TableCell>
+                            <TableCell>{{ item.project }}</TableCell>
                             <TableCell>{{ item.issue_date }}</TableCell>
                             <TableCell>{{ item.due_date }}</TableCell>
+                            <TableCell><StatusBadge :status="item.status" /></TableCell>
                             <TableCell class="text-right flex gap-2 justify-end">   
 
-                                <Link :href="projectShow(item.id).url">
+                                <Link :href="invoiceShow(item.id).url">
                                     <Button variant="show" size="sm">
                                         <Eye class="w-4 h-4" />
                                     </Button>

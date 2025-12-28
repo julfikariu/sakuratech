@@ -18,7 +18,6 @@ const classes = computed(() => {
         case 'Inactive':
             return 'text-red-600 bg-red-100'
         case 'Cancelled':
-            return 'text-red-600 bg-red-100'
         case 'Cancel':
             return 'text-red-600 bg-red-100'
         case 'Archive':
@@ -29,6 +28,8 @@ const classes = computed(() => {
             return 'text-red-600 bg-red-100'
         case 'Unlock':
             return 'text-green-600 bg-green-100'
+        case 'draft':
+            return 'text-gray-700 bg-gray-200 capitalize'
         default:
             return 'text-gray-600 bg-gray-100'
     }

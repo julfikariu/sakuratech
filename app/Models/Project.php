@@ -24,4 +24,14 @@ class Project extends Model
         'start_date' => 'date',
         'deadline' => 'date',
     ];
+
+    /**
+     * Get the client that owns the project.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function client()
+    {
+        return $this->belongsTo(Client::class, 'client_id');
+    }
 }

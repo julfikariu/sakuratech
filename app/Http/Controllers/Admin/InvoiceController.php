@@ -22,7 +22,8 @@ class InvoiceController extends Controller
             return [
                 'id'           => $invoice->id,
                 'inv_unique_id' => $invoice->inv_unique_id,
-                'client_id'    => $invoice->client_id,
+                'client'       => $invoice->client->user()->first()->name ?? null,
+                'project'      => $invoice->project->title ?? null,
                 'invoice_id'   => $invoice->invoice_id,
                 'amount'       => $invoice->amount,
                 'issue_date'   => $invoice->issue_date?->format('d M Y'),
@@ -58,6 +59,7 @@ class InvoiceController extends Controller
             'inv_unique_id' => 'INV-' . strtoupper(uniqid()),
             'client_id'   => $request->client_id,
             'invoice_id'  => $request->invoice_id,
+            'project_id'  => $request->project_id,
             'issue_date'  => $request->issue_date,
             'due_date'    => $request->due_date,
             'notes'       => $request->notes,
@@ -72,19 +74,24 @@ class InvoiceController extends Controller
 
     public function show(Invoice $invoice)
     {
+        // Load related data
+        $invoice->load('items', 'client');
+
         $data = [
-            'id'        => $invoice->id,
-            'client_id'   => $invoice->client_id,
-            'title' => $invoice->title,
-            'description'     => $invoice->description,
-            'start_date'   => $invoice->start_date,
-            'deadline'   => $invoice->deadline,
-            'progress'    => $invoice->progress,
-            'status'    => $invoice->status,
-            'created_at' => $invoice->created_at?->format('d M Y, h:i A'),
+            'id'         => $invoice->id,
+            'client'  => $invoice->client->user()->first()->name ?? null,
+            'invoice_id' => $invoice->invoice_id,
+            'issue_date' => $invoice->issue_date?->format('Y-m-d'),
+            'due_date'   => $invoice->due_date?->format('Y-m-d'),
+            'amount'     => $invoice->amount,
+            'notes'      => $invoice->notes,
+            'status'     => $invoice->status,
         ];
-        return Inertia::render('admin/invoices/Details', [
+
+        return Inertia::render('admin/invoices/Show', [
             'invoice' => $data,
+            'invoiceItems' => $invoice->items ?? [],
+            'client' => $invoice->client,
         ]);
     }
 

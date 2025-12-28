@@ -34,4 +34,26 @@ class Client extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Get the invoices for the client.
+     * 
+     * @return HasMany
+     */
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
+    /**
+     * Get the payments for the client.
+     * 
+     * @return HasMany
+     */
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    
 }

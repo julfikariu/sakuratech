@@ -40,4 +40,14 @@ class Invoice extends Model
     {
         return $this->belongsTo(Client::class, 'client_id');
     }
+
+    /**
+     * Get the project that owns the invoice.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function project()
+    {
+        return $this->belongsTo(Project::class, 'project_id');
+    }
 }

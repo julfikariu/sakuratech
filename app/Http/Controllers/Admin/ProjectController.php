@@ -19,6 +19,7 @@ class ProjectController extends Controller
                 'id'           => $project->id,
                 'title'        => $project->title,
                 'client_id'    => $project->client_id,
+                'client_name'  => $project->client->company_name ?? null,
                 'type'         => $project->type,
                 'description'  => $project->description,
                 'start_date'   => $project->start_date?->format('d M Y'),

@@ -21,8 +21,10 @@ class ClientController extends Controller
                 'user_id'      => $client->user_id,
                 'company_name' => $client->company_name,
                 'phone'        => $client->phone,
-                'address'      => $client->address,
-                'website'      => $client->website,
+                'project'      => $client->projects()->count(),
+                'invoice'      => $client->invoices()->sum('amount'),
+                'payment'      => $client->payments()->sum('amount'),
+                'status'       => $client->status,
                 'created_at'   => $client->created_at?->format('d M Y, h:i A'),
             ];
         });

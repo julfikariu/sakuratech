@@ -17,15 +17,29 @@ import { dashboard } from "@/routes";
 import { type BreadcrumbItem } from '@/types';
 import PageHeader from '@/components/PageHeader.vue';
 import NoResults from '@/components/NoResults.vue';
-import type { Project, PaginationLink } from '@/types/models';
+import type {  PaginationLink } from '@/types/models';
 import Pagination from '@/components/Pagination.vue';
 import { create as projectCreate } from '@/routes/admin/projects';
 import { show as projectShow } from '@/routes/admin/projects';
 import { edit as projectEdit } from '@/routes/admin/projects';
 import { destroy as projectDelete } from '@/routes/admin/projects';
 import ModalLink from '@/components/ModalLink.vue';
+import StatusBadge from '@/components/StatusBadge.vue';
 import { deleteBySwal } from '@/composables/useSwal';
 
+interface Project {
+    id: number;
+    title: string;
+    client_id: number;
+    client_name: string | null;
+    type: string;
+    description: string;
+    start_date: string;
+    deadline: string;
+    progress: number;
+    status: 'Active' | 'Completed' | 'Pending';
+    created_at: string;
+}
 interface Flash {
     message?: string;
     type?: string;
@@ -88,6 +102,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                             <TableHead>Client</TableHead>
                             <TableHead>Start Dtae</TableHead>
                             <TableHead>Deadline</TableHead>
+                            <TableHead>Status</TableHead>
                             <TableHead class="text-right">Actions</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -95,9 +110,10 @@ const breadcrumbs: BreadcrumbItem[] = [
                         <TableRow v-for="item in props.projects.data" :key="item.id">
                             <TableCell>{{ item.id }}</TableCell>
                             <TableCell>{{ item.title }}</TableCell>
-                            <TableCell>{{ item.client_id }}</TableCell>
+                            <TableCell>{{ item.client_name }}</TableCell>
                             <TableCell>{{ item.start_date }}</TableCell>
                             <TableCell>{{ item.deadline }}</TableCell>
+                            <TableCell><StatusBadge :status="item.status" /></TableCell>
                             <TableCell class="text-right flex gap-2 justify-end">                    
                                 <Link :href="projectShow(item.id).url">
                                     <Button variant="show" size="sm">

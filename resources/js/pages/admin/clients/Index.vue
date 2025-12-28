@@ -17,7 +17,7 @@ import { dashboard } from "@/routes";
 import { type BreadcrumbItem } from '@/types';
 import PageHeader from '@/components/PageHeader.vue';
 import NoResults from '@/components/NoResults.vue';
-import type { Client, PaginationLink } from '@/types/models';
+import type { PaginationLink } from '@/types/models';
 import Pagination from '@/components/Pagination.vue';
 import { create as ClientCreate } from '@/routes/admin/clients';
 import { show as clientShow } from '@/routes/admin/clients';
@@ -25,8 +25,20 @@ import { edit as clientEdit } from '@/routes/admin/clients';
 import { destroy as clientDelete } from '@/routes/admin/clients';
 import Search from './Search.vue';
 import ModalLink from '@/components/ModalLink.vue';
+import StatusBadge from '@/components/StatusBadge.vue';
 import { deleteBySwal } from '@/composables/useSwal';
 
+interface Client {
+    id: number;
+    user_id: number;
+    company_name: string;
+    phone: string;
+    project: number;
+    invoice: number;
+    payment: number;
+    status: string;
+    created_at: string;
+}
 
 interface Flash {
     message?: string;
@@ -92,8 +104,10 @@ const breadcrumbs: BreadcrumbItem[] = [
                             <TableHead>ID</TableHead>
                             <TableHead>Company Name</TableHead>
                             <TableHead>Phone</TableHead>
-                            <TableHead>Address</TableHead>
-                            <TableHead>Website</TableHead>
+                            <TableHead>Project</TableHead>
+                            <TableHead>Invoice</TableHead>
+                            <TableHead>Payments</TableHead>
+                            <TableHead>Status</TableHead>
                             <TableHead class="text-right">Actions</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -102,8 +116,10 @@ const breadcrumbs: BreadcrumbItem[] = [
                             <TableCell>{{ item.id }}</TableCell>
                             <TableCell>{{ item.company_name }}</TableCell>
                             <TableCell>{{ item.phone }}</TableCell>
-                            <TableCell>{{ item.address }}</TableCell>
-                            <TableCell>{{ item.website }}</TableCell>
+                            <TableCell>{{ item.project }}</TableCell>
+                            <TableCell>{{ item.invoice }}</TableCell>
+                            <TableCell>{{ item.payment }}</TableCell>                    
+                            <TableCell><StatusBadge :status="item.status" /></TableCell>
                             <TableCell class="text-right flex gap-2 justify-end">
 
                                 <ModalLink :href="clientShow(item.id).url" :itemid="item.id"
