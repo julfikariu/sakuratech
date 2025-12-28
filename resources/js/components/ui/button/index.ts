@@ -23,6 +23,7 @@ export const buttonVariants = cva(
         reset:
             'bg-yellow-500 text-white shadow-xs hover:bg-yellow-600 focus-visible:ring-yellow-200',
         show:'text-purple-600 dark:text-purple-400 bg-purple-100 hover:bg-purple-200 dark:hover:bg-purple-900/20 rounded-lg hover:border-purple-200 dark:hover:border-purple-800',
+        download:'text-green-600 dark:text-green-400 bg-green-100 hover:bg-green-200 dark:hover:bg-green-900/20 rounded-lg hover:border-green-200 dark:hover:border-green-800',
         edit:'text-blue-600 dark:text-blue-400 bg-blue-100 hover:bg-blue-200 dark:hover:bg-blue-900/20 rounded-lg hover:border-blue-200 dark:hover:border-blue-800',
         delete:'text-red-600 dark:text-red-400 bg-red-100 hover:bg-red-200 dark:hover:bg-red-900/20 rounded-lg hover:border-red-200 dark:hover:border-red-800',
         details:'text-purple-600 dark:text-purple-400 bg-purple-100 hover:bg-purple-200 dark:hover:bg-purple-900/20 rounded-lg hover:border-purple-200 dark:hover:border-purple-800',

@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\Admin\Invoice\InvoiceRequest;
 use Illuminate\Support\Facades\DB; // for transactions
 use App\Http\Requests\Admin\Invoice\InvoiceUpdateRequest;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class InvoiceController extends Controller
 {
@@ -181,13 +182,38 @@ class InvoiceController extends Controller
 
     public function destroy(Invoice $invoice): RedirectResponse
     {
-
-    
+        $invoice->items()->delete();
         $invoice->delete();
         
         return redirect()->route('admin.invoices.index')->with('flash', [
             'message' => 'Invoice deleted successfully!',
             'type' => 'success'
         ]);
+    }
+
+    public function download(Invoice $invoice)
+    {
+      /*   $invoice->load('items', 'client');
+
+        return Pdf::loadView('admin.invoices.pdf', [
+            'invoice' => $invoice
+        ])
+        ->setPaper('a4', 'portrait')
+        ->stream("invoice-{$invoice->id}.pdf"); */
+   
+        // Load related data
+        $invoice->load('items', 'client');
+
+        // Prepare data for the view
+        $data = [
+            'invoice' => $invoice,
+        ];
+
+        // Generate PDF using the dompdf facade
+        $pdf = Pdf::loadView('admin.invoices.pdf', $data)
+                  ->setPaper('a4', 'portrait');
+
+        // Return as download
+        return $pdf->download('invoice_' . $invoice->inv_unique_id . '.pdf');
     }
 }

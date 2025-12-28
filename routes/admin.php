@@ -27,6 +27,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
     // Manage Invoices
     Route::resource('invoices', InvoiceController::class)->names('invoices');
+    Route::get('invoices/{invoice}/download', [InvoiceController::class, 'download'])->name('invoices.download');
 
     // Manage Payments
     Route::resource('payments', PaymentController::class)->names('payments');

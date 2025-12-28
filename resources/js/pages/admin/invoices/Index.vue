@@ -11,7 +11,7 @@ import {
     TableRow,
 } from '@/components/ui/table'
 import { Button } from '@/components/ui/button';
-import { Plus, Eye, SquarePen, Trash2Icon } from 'lucide-vue-next';
+import { Plus, Eye, SquarePen, Trash2Icon, Download } from 'lucide-vue-next';
 import { Link } from '@inertiajs/vue3';
 import { dashboard } from "@/routes";
 import { type BreadcrumbItem } from '@/types';
@@ -23,6 +23,7 @@ import { create as invoiceCreate } from '@/routes/admin/invoices';
 import { show as projectShow } from '@/routes/admin/invoices';
 import { edit as invoiceEdit } from '@/routes/admin/invoices';
 import { destroy as invoiceDelete } from '@/routes/admin/invoices';
+import { download as invoiceDownload } from '@/routes/admin/invoices';
 import ModalLink from '@/components/ModalLink.vue';
 import { deleteBySwal } from '@/composables/useSwal';
 
@@ -68,6 +69,11 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+function downloadPdf(id: number) {
+    const url = invoiceDownload({ invoice: id }).url;
+    window.open(url, '_blank');
+}
+
 </script>
 
 <template>
@@ -108,12 +114,16 @@ const breadcrumbs: BreadcrumbItem[] = [
                             <TableCell>{{ item.project_id }}</TableCell>
                             <TableCell>{{ item.issue_date }}</TableCell>
                             <TableCell>{{ item.due_date }}</TableCell>
-                            <TableCell class="text-right flex gap-2 justify-end">                    
+                            <TableCell class="text-right flex gap-2 justify-end">   
+
                                 <Link :href="projectShow(item.id).url">
                                     <Button variant="show" size="sm">
                                         <Eye class="w-4 h-4" />
                                     </Button>
                                 </Link>
+                                <Button @click="downloadPdf(item.id)" variant="download" size="sm" title="Download Invoice">
+                                    <Download  class="w-4 h-4" />
+                                </Button>
 
                                  <Link :href="invoiceEdit(item.id).url">
                                     <Button variant="edit" size="sm">
