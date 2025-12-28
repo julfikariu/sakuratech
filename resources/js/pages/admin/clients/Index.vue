@@ -122,10 +122,11 @@ const breadcrumbs: BreadcrumbItem[] = [
                             <TableCell><StatusBadge :status="item.status" /></TableCell>
                             <TableCell class="text-right flex gap-2 justify-end">
 
-                                <ModalLink :href="clientShow(item.id).url" :itemid="item.id"
-                                    variant="assign" :size="'sm'">
-                                    <Eye class="w-4 h-4" />
-                                </ModalLink>
+                                <Link :href="clientShow(item.id).url">
+                                   <Button variant="show" size="sm">
+                                        <Eye class="w-4 h-4" />
+                                    </Button>
+                                </Link>
                                 <Link :href="clientEdit(item.id).url">
                                     <Button variant="edit" size="sm">
                                         <SquarePen class="w-4 h-4" />

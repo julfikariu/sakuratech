@@ -141,7 +141,7 @@ function submitForm() {
                         <div class="flex gap-2 w-1/12">
                             <Button type="submit"  variant="save" :disabled="form.processing">
                                 <LoaderCircle v-if="form.processing" class="w-4 h-4 animate-spin mr-2" />
-                                <Save v-else class="w-4 h-4" /> Create
+                                <Save v-else class="w-4 h-4" /> Save
                             </Button>
                             <Button type="button" class="cursor-pointer" variant="secondary"
                                 @click.prevent="close">

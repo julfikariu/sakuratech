@@ -21,6 +21,11 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
     // Manage Clients
     Route::resource('clients', ClientController::class)->names('clients');
+    Route::get('clients/{client}/projects', [ClientController::class, 'projects'])->name('clients.projects');
+    Route::get('clients/{client}/invoices', [ClientController::class, 'invoices'])->name('clients.invoices');
+    Route::get('clients/{client}/payments', [ClientController::class, 'payments'])->name('clients.payments');
+    Route::get('clients/{client}/change-password', [ClientController::class, 'changePasswordForm'])->name('clients.change-password.form');
+    Route::post('clients/{client}/change-password', [ClientController::class, 'changePassword'])->name('clients.change-password');
 
     // Manage Projects
     Route::resource('projects', ProjectController::class)->names('projects');

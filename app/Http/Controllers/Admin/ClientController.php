@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\In;
 
 class ClientController extends Controller
 {
@@ -67,6 +68,9 @@ class ClientController extends Controller
 
     public function show(Client $client)
     {
+        // Load related data
+        $client->load('user');
+
         $data = [
             'id'        => $client->id,
             'user_id'   => $client->user_id,
@@ -77,7 +81,8 @@ class ClientController extends Controller
             'status'    => $client->status,
             'created_at' => $client->created_at?->format('d M Y, h:i A'),
         ];
-        return Inertia::render('admin/clients/DetailsModal', [
+
+        return Inertia::render('admin/clients/Details', [
             'client' => $data,
         ]);
     }
@@ -147,6 +152,66 @@ class ClientController extends Controller
         
         return redirect()->route('admin.clients.index')->with('flash', [
             'message' => 'Client deleted successfully!',
+            'type' => 'success'
+        ]);
+    }
+
+
+    public function projects(Client $client)
+    {
+        $projects = $client->projects()->get();
+
+        return Inertia::render('admin/clients/Projects', [
+            'client' => $client,
+            'projects' => $projects,
+        ]);
+    }
+
+    public function invoices(Client $client)
+    {
+        $invoices = $client->invoices()->get();
+
+        return Inertia::render('admin/clients/Invoices', [
+            'client' => $client,
+            'invoices' => $invoices,
+        ]);
+    }
+
+    public function payments(Client $client)
+    {
+        $payments = $client->payments()->get();
+
+        return Inertia::render('admin/clients/Payments', [
+            'client' => $client,
+            'payments' => $payments,
+        ]);
+    }
+
+    public function changePasswordForm(Client $client)
+    {
+        $data = [
+            'id'        => $client->id,            
+            'company_name' => $client->company_name,
+            'email'     => $client->user->email,
+        ];
+        return Inertia::render('admin/clients/ChangePassword', [
+            'client' => $data,
+        ]);
+    }
+
+    public function changePassword(Request $request, Client $client): RedirectResponse
+    {
+        $request->validate([
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+
+        $client->user->update([
+            'password' => bcrypt($request->password),
+        ]);
+
+        return redirect()->route('admin.clients.show', $client->id)->with('flash', [
+            'message' => 'Password changed successfully!',
             'type' => 'success'
         ]);
     }

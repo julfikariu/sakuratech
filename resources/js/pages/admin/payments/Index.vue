@@ -188,12 +188,7 @@ const getMethodLabel = (method: string): string => {
                                     <ModalLink :href="paymentEdit(payment.id).url" variant="edit" :size="'sm'">
                                         <SquarePen class="w-4 h-4" />
                                     </ModalLink>
-                                    <Button
-                                        @click="deletePayment(payment)"
-                                        variant="outline"
-                                        size="sm"
-                                        class="text-red-600 border-red-600 hover:bg-red-50"
-                                    >
+                                    <Button @click="deletePayment(payment)" variant="delete" size="sm">
                                         <Trash2Icon class="w-4 h-4" />
                                     </Button>
                                 </div>

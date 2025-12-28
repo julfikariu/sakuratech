@@ -2,7 +2,15 @@
 import Modal from '@/components/Modal.vue';
 import { close } from '@/composables/useModal';
 import { Button } from '@/components/ui/button';
-
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableRow,
+} from '@/components/ui/table';
+import { SquarePen, X } from 'lucide-vue-next';
+import { edit as paymentEdit } from '@/routes/admin/payments';
+import ModalLink from '@/components/ModalLink.vue';
 
 interface Payment {
     id: number;
@@ -12,35 +20,76 @@ interface Payment {
     payment_method: string;
     transaction_id: string;
     notes: string | null;
+    created_at: string | null;
 }
 
 const props = defineProps<{
     payment: Payment;
 }>();
-
 </script>
 
 <template>
     <Modal :show="true" :size="'md'" :title="`Payment Details - #${props.payment.id}`" @close="close">
-        <div class="pb-6">
-            <div class="space-y-4">
-                <div>
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">Payment Information</h3>
-                    <div class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                        <p><strong>Payment ID:</strong> {{ props.payment.id }}</p>
-                        <p><strong>Invoice ID:</strong> {{ props.payment.invoice_id }}</p>
-                        <p><strong>Amount:</strong> ${{ props.payment.amount.toFixed(2) }}</p>
-                        <p><strong>Payment Date:</strong> {{ props.payment.payment_date }}</p>
-                        <p><strong>Payment Method:</strong> {{ props.payment.payment_method }}</p>
-                        <p><strong>Transaction ID:</strong> {{ props.payment.transaction_id }}</p>
-                        <p><strong>Notes:</strong> {{ props.payment.notes || 'N/A' }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="mt-6 flex justify-end">
-                
-                <Button @click="close">Close</Button>
-            </div>
+        <div class="px-4">
+            <div class="overflow-x-auto bg-white dark:bg-gray-900 rounded">
+                <Table>
+                    <TableBody>
+                        <TableRow>
+                            <TableCell class="py-2 pl-0 font-semibold text-gray-700 w-2/10">Payment ID</TableCell>
+                            <TableCell class="py-2 pl-0 text-center">:</TableCell>
+                            <TableCell class="py-2 pl-0">{{ props.payment.id }}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell class="py-2 pl-0 font-semibold text-gray-700">Invoice ID</TableCell>
+                            <TableCell class="py-2 pl-0 text-center">:</TableCell>
+                            <TableCell class="py-2 pl-0">{{ props.payment.invoice_id }}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell class="py-2 pl-0 font-semibold text-gray-700">Payment</TableCell>
+                            <TableCell class="py-2 pl-0 text-center">:</TableCell>
+                            <TableCell class="py-2 pl-0">${{ props.payment.amount.toFixed(2) }} </TableCell>
+                        </TableRow>
+                    
+                        <TableRow>
+                            <TableCell class="py-2 pl-0 font-semibold text-gray-700">Payment Date</TableCell>
+                            <TableCell class="py-2 pl-0 text-center">:</TableCell>
+                            <TableCell class="py-2 pl-0">{{ props.payment.payment_date }}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell class="py-2 pl-0 font-semibold text-gray-700">Payment Method</TableCell>
+                            <TableCell class="py-2 pl-0 text-center">:</TableCell>
+                            <TableCell class="py-2 pl-0">{{ props.payment.payment_method }}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell class="py-2 pl-0 font-semibold text-gray-700">Transaction ID</TableCell>
+                            <TableCell class="py-2 pl-0 text-center">:</TableCell>
+                            <TableCell class="py-2 pl-0">{{ props.payment.transaction_id }}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell class="py-2 pl-0 font-semibold text-gray-700">Notes</TableCell>
+                            <TableCell class="py-2 pl-0 text-center">:</TableCell>
+                            <TableCell class="py-2 pl-0">{{ props.payment.notes || 'N/A' }}</TableCell>
+                        </TableRow>
+
+                        <TableRow>
+                            <TableCell class="py-2 pl-0 font-semibold text-gray-700">Created At</TableCell>
+                            <TableCell class="py-2 pl-0 text-center">:</TableCell>
+                            <TableCell class="py-2 pl-0">{{ props.payment.created_at ?? '-' }}</TableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>                
+            </div>            
         </div>
+        <template #footer>
+            <div class="flex justify-end gap-3">  
+                <ModalLink :href="paymentEdit(payment.id).url" variant="reset" :size="'sm'">
+                    <SquarePen class="w-4 h-4" /> Update
+                </ModalLink>             
+              
+                <Button @click="close" variant="secondary" class="cursor-pointer">
+                    <X class="w-4 h-4" /> Close
+                </Button>
+            </div>
+        </template>
     </Modal>
 </template>
