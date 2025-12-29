@@ -8,9 +8,12 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Ticket\TicketRequest;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 
 class TicketController extends Controller
 {
+     use AuthorizesRequests;
     public function index()
     {
         $paginator = Ticket::latest()->paginate(10)->withQueryString();
@@ -65,6 +68,19 @@ class TicketController extends Controller
 
     public function show(Ticket $ticket)
     {
+        $replies = $ticket->replies()->with('user')->get()->map(function ($reply) use ($ticket) {
+            return [
+                'id' => $reply->id,
+                'message' => $reply->message,
+                'user' => [
+                    'id' => $reply->user->id,
+                    'name' => $reply->user->name,
+                ],
+                'created_at' => $reply->created_at?->format('d M Y, h:i A'),
+                'can_delete' => auth()->id() === $reply->user_id || auth()->id() === $ticket->user_id || auth()->id() === $ticket->assignee_id,
+            ];
+        });
+
         $data = [
             'id' => $ticket->id,
             'title' => $ticket->title,
@@ -75,6 +91,7 @@ class TicketController extends Controller
                 'id' => $ticket->assignee->id,
                 'name' => $ticket->assignee->name,
             ] : null,
+            'replies' => $replies->toArray(),
             'created_at' => $ticket->created_at?->format('d M Y, h:i A'),
         ];
 
@@ -85,6 +102,9 @@ class TicketController extends Controller
 
     public function edit(Ticket $ticket)
     {
+
+        // $this->authorize('update', $ticket);
+
         $users = User::all()->map(function ($user) {
             return [
                 'id' => $user->id,
@@ -110,6 +130,8 @@ class TicketController extends Controller
 
     public function update(TicketRequest $request, Ticket $ticket)
     {
+        // $this->authorize(ability: User::class, Ticket::class);
+        $this->authorize('update', $ticket);
 
         $ticket->update([
             'assignee_id' => $request->assignee_id,

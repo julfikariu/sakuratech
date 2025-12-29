@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import PageHeader from '@/components/PageHeader.vue';
+import Conversation from '@/components/tickets/Conversation.vue';
+import ReplyForm from '@/components/tickets/ReplyForm.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from "@/routes";
 import { index as ticketIndex } from '@/routes/admin/tickets';
@@ -43,6 +45,9 @@ const breadcrumbs: BreadcrumbItem[] = [
                 <p><strong>Assignee:</strong> {{ props.ticket.assignee?.name || 'Unassigned' }}</p>
             </div>
         </div>
+
+        <Conversation :replies="props.ticket.replies || []" :ticketId="props.ticket.id" />
+        <ReplyForm :ticketId="props.ticket.id" />
     </div>
 </AppLayout>
 </template>

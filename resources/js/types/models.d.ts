@@ -7,6 +7,13 @@ export interface Contact {
     created_at: string;
 }
 
+export interface TicketReply {
+    id: number;
+    message: string;
+    user: { id: number; name: string };
+    created_at: string;
+}
+
 export interface Ticket {
     id: number;
     title: string;
@@ -14,6 +21,7 @@ export interface Ticket {
     priority: 'Low' | 'Medium' | 'High';
     status: 'Open' | 'Pending' | 'Closed';
     assignee?: { id: number; name: string } | null;
+    replies?: TicketReply[];
     created_at: string;
 }
 

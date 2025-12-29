@@ -43,6 +43,11 @@ class Ticket extends Model
         return $this->belongsTo(User::class, 'assignee_id');
     }
 
+    public function replies()
+    {
+        return $this->hasMany(TicketReply::class, 'ticket_id')->orderBy('created_at', 'asc');
+    }
+
     public function scopeStatus($query, $status)
     {
         return $query->where('status', $status);

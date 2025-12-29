@@ -35,6 +35,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('tickets', TicketController::class)->names('tickets');
     Route::post('tickets/{ticket}/change-status', [\App\Http\Controllers\Admin\TicketController::class, 'changeStatus'])->name('tickets.change-status');
 
+    // Ticket replies
+    Route::post('tickets/{ticket}/replies', [\App\Http\Controllers\Admin\TicketReplyController::class, 'store'])->name('tickets.replies.store');
+    Route::delete('tickets/{ticket}/replies/{reply}', [\App\Http\Controllers\Admin\TicketReplyController::class, 'destroy'])->name('tickets.replies.destroy');
+
     // Manage Invoices
     Route::resource('invoices', InvoiceController::class)->names('invoices');
     Route::get('invoices/{invoice}/download', [InvoiceController::class, 'download'])->name('invoices.download');
