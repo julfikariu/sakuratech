@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\TicketController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PaymentController;
 
@@ -29,6 +30,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
     // Manage Projects
     Route::resource('projects', ProjectController::class)->names('projects');
+
+    // Manage Tickets
+    Route::resource('tickets', TicketController::class)->names('tickets');
+    Route::post('tickets/{ticket}/change-status', [\App\Http\Controllers\Admin\TicketController::class, 'changeStatus'])->name('tickets.change-status');
 
     // Manage Invoices
     Route::resource('invoices', InvoiceController::class)->names('invoices');

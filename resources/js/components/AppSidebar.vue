@@ -11,20 +11,26 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
-import { index as contacts } from '@/routes/admin/contacts';
-import { index as permissions } from '@/routes/admin/permission';
+import { dashboard } from "@/routes";
 import { index as clients } from '@/routes/admin/clients';
-import { index as projects } from '@/routes/admin/projects';
-import { index as roles } from '@/routes/admin/role';
+import { index as contacts } from '@/routes/admin/contacts';
 import { index as invoices } from '@/routes/admin/invoices';
 import { index as payments } from '@/routes/admin/payments';
+import { index as permissions } from '@/routes/admin/permission';
+import { index as projects } from '@/routes/admin/projects';
+import { index as roles } from '@/routes/admin/role';
+import { index as tickets } from '@/routes/admin/tickets';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import {
+    ContactRound,
     Key,
-    LayoutGrid, ContactRound, ListChecks,
-    User, Receipt, WalletCards, SquareKanban
+    LayoutGrid,
+    ListChecks,
+    Receipt,
+    SquareKanban,
+    User,
+    WalletCards
 } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
@@ -57,6 +63,11 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Projects',
         href: projects(),
+        icon: SquareKanban,
+    },
+    {
+        title: 'Tickets',
+        href: tickets(),
         icon: SquareKanban,
     },
     {
