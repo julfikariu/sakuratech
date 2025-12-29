@@ -5,6 +5,24 @@ import { dashboard } from "@/routes";
 import { index as clientsIndex } from '@/routes/admin/clients';
 import { type BreadcrumbItem } from '@/types';
 import TabMenu from './TabMenu.vue';
+import NoResults from '@/components/NoResults.vue';
+import { Table,
+    TableBody,
+    TableCell,
+    TableHeader,
+    TableHead,
+    TableRow,
+} from '@/components/ui/table'
+import { Button } from '@/components/ui/button';
+import { Plus, Eye, SquarePen, Trash2Icon } from 'lucide-vue-next';
+import { Link } from '@inertiajs/vue3';
+import { create as projectCreate } from '@/routes/admin/projects';
+import { show as projectShow } from '@/routes/admin/projects';
+import { edit as projectEdit } from '@/routes/admin/projects';
+import { destroy as projectDelete } from '@/routes/admin/projects';
+import { deleteBySwal } from '@/composables/useSwal';
+import ModalLink from '@/components/ModalLink.vue';
+import StatusBadge from '@/components/StatusBadge.vue';
 
 interface Project {
     id: number;
@@ -50,29 +68,45 @@ const breadcrumbs: BreadcrumbItem[] = [
         <div class="mt-6 bg-white dark:bg-gray-900 rounded shadow">
             <div class="p-6">
                 <h2 class="text-2xl font-semibold mb-4">Projects</h2>
-                <div v-if="props.projects && props.projects.length > 0" class="overflow-x-auto">
-                    <table class="w-full text-sm">
-                        <thead>
-                            <tr class="border-b">
-                                <th class="py-3 px-4 text-left">ID</th>
-                                <th class="py-3 px-4 text-left">Title</th>
-                                <th class="py-3 px-4 text-left">Start Date</th>
-                                <th class="py-3 px-4 text-left">Deadline</th>
-                                <th class="py-3 px-4 text-left">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="proj in props.projects" :key="proj.id" class="border-b hover:bg-gray-50 dark:hover:bg-gray-800">
-                                <td class="py-3 px-4">{{ proj.id }}</td>
-                                <td class="py-3 px-4">{{ proj.title ?? '—' }}</td>
-                                <td class="py-3 px-4">{{ proj.start_date ?? '—' }}</td>
-                                <td class="py-3 px-4">{{ proj.deadline ?? '—' }}</td>
-                                <td class="py-3 px-4">{{ proj.status ?? '—' }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div v-else class="text-gray-500 py-8 text-center">No projects found.</div>
+                <div v-if="props.projects && props.projects.length > 0"
+                class="overflow-x-auto bg-white dark:bg-gray-900 rounded shadow">
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>ID</TableHead>
+                            <TableHead>Title</TableHead>
+                            <TableHead>Start Dtae</TableHead>
+                            <TableHead>Deadline</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead class="text-right">Actions</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        <TableRow v-for="item in props.projects" :key="item.id">
+                            <TableCell>{{ item.id }}</TableCell>
+                            <TableCell>{{ item.title }}</TableCell>
+                            <TableCell>{{ item.start_date }}</TableCell>
+                            <TableCell>{{ item.deadline }}</TableCell>
+                            <TableCell><StatusBadge :status="item.status" /></TableCell>
+                            <TableCell class="text-right flex gap-2 justify-end">                    
+                                <Link :href="projectShow(item.id).url">
+                                    <Button variant="show" size="sm">
+                                        <Eye class="w-4 h-4" />
+                                    </Button>
+                                </Link>
+                                <ModalLink :href="projectEdit(item.id).url" variant="edit" :size="'sm'">
+                                    <SquarePen class="w-4 h-4" />
+                                </ModalLink>
+                                <Button @click="deleteBySwal(projectDelete({ project: item.id }).url, 'project')"
+                                    variant="delete" size="sm" title="Delete project">
+                                    <Trash2Icon class="w-4 h-4" />
+                                </Button>
+                            </TableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>            
+            </div>
+            <NoResults v-else />
             </div>
         </div>
     </div>
