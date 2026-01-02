@@ -6,8 +6,9 @@ import { type BreadcrumbItem } from '@/types';
 import PageHeader from '@/components/PageHeader.vue';
 import { create as invoiceCreate } from '@/routes/admin/invoices';
 import ModalLink from '@/components/ModalLink.vue';
-import InvoiceList from '@/components/invoice/InvoiceList.vue';
 import type { PaginatedInvoices } from '@/types/invoice';
+import InvoiceTable from '@/components/invoice/InvoiceTable.vue';
+
 
 interface Flash {
     message?: string;
@@ -50,7 +51,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                 </div>
             </div>
 
-            <InvoiceList :invoices="props.invoices" />
+            <InvoiceTable :invoices="props.invoices" />
             
         </div>
     </AppLayout>

@@ -5,8 +5,8 @@ import { dashboard } from "@/routes";
 import { index as clientsIndex } from '@/routes/admin/clients';
 import { type BreadcrumbItem } from '@/types';
 import TabMenu from './TabMenu.vue';
-import InvoiceList from '@/components/invoice/InvoiceList.vue';
 import type { PaginatedInvoices } from '@/types/invoice';
+import InvoiceTable from '@/components/invoice/InvoiceTable.vue';
 
 interface Client {
     id: number;
@@ -40,15 +40,9 @@ const breadcrumbs: BreadcrumbItem[] = [
         <PageHeader :title="`Client - ${props.client.company_name ?? ('#' + props.client.id)}`" description="" :breadcrumbs="breadcrumbs" />
 
         <TabMenu :client_id="props.client.id" />
+       
+        <InvoiceTable :invoices="props.invoices" :showClientColumn="false" />
 
-        <div class=" bg-white dark:bg-gray-900 rounded shadow">
-            <div class="p-6">
-                <h2 class="text-2xl font-semibold mb-4">Invoices</h2>
-
-                <InvoiceList :invoices="props.invoices" :showClientColumn="false" />
-                
-            </div>
-        </div>
     </div>
 </AppLayout>
 </template>

@@ -6,6 +6,7 @@ use App\Models\Client;
 use App\Models\Project;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
+use App\Http\Resources\ProjectResource;
 use App\Http\Requests\Admin\Project\ProjectRequest;
 
 class ProjectController extends Controller
@@ -14,23 +15,12 @@ class ProjectController extends Controller
     {
         $paginator = Project::paginate(10)->withQueryString();
 
-        $paginator->getCollection()->transform(function ($project) {
-            return [
-                'id'           => $project->id,
-                'title'        => $project->title,
-                'client_id'    => $project->client_id,
-                'client_name'  => $project->client->company_name ?? null,
-                'type'         => $project->type,
-                'description'  => $project->description,
-                'start_date'   => $project->start_date?->format('d M Y'),
-                'deadline'     => $project->deadline?->format('d M Y'),
-                'status'       => $project->status,
-                'created_at'   => $project->created_at?->format('d M Y, h:i A'),
-            ];
-        });
+        $projects = $paginator->through(
+            fn($invoice) => (new ProjectResource($invoice))->toArray(request())
+        );
 
         return Inertia::render('admin/projects/Index', [
-            'projects' => $paginator,
+            'projects' => $projects,
         ]);
     }
 

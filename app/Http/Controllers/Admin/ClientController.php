@@ -9,6 +9,7 @@ use Illuminate\Validation\Rules\In;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Resources\InvoiceResource;
+use App\Http\Resources\ProjectResource;
 use App\Http\Requests\Admin\Client\ClientRequest;
 
 class ClientController extends Controller
@@ -160,7 +161,10 @@ class ClientController extends Controller
 
     public function projects(Client $client)
     {
-        $projects = $client->projects()->get();
+        $paginator = $client->projects()->paginate(10);
+        $projects = $paginator->through(
+            fn($invoice) => (new ProjectResource($invoice))->toArray(request())
+        );
 
         return Inertia::render('admin/clients/Projects', [
             'client' => $client,
