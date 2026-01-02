@@ -1,16 +1,18 @@
-<?php 
+<?php
+
 namespace App\Http\Controllers\Admin;
 
 use Inertia\Inertia;
 use App\Models\Client;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
+use App\Http\Resources\InvoiceResource;
 use App\Http\Requests\Admin\Invoice\InvoiceRequest;
-use Illuminate\Support\Facades\DB; // for transactions
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\Admin\Invoice\InvoiceUpdateRequest;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 class InvoiceController extends Controller
 {
@@ -18,24 +20,12 @@ class InvoiceController extends Controller
     {
         $paginator = Invoice::paginate(10)->withQueryString();
 
-        $paginator->getCollection()->transform(function ($invoice) {
-            return [
-                'id'           => $invoice->id,
-                'inv_unique_id' => $invoice->inv_unique_id,
-                'client'       => $invoice->client->user()->first()->name ?? null,
-                'project'      => $invoice->project->title ?? null,
-                'invoice_id'   => $invoice->invoice_id,
-                'amount'       => $invoice->amount,
-                'issue_date'   => $invoice->issue_date?->format('d M Y'),
-                'due_date'     => $invoice->due_date?->format('d M Y'),
-                'notes'        => $invoice->notes,
-                'status'       => $invoice->status,
-                'created_at'   => $invoice->created_at?->format('d M Y, h:i A'),
-            ];
-        });
+        $invoices = $paginator->through(
+            fn($invoice) => (new InvoiceResource($invoice))->toArray(request())
+        );
 
         return Inertia::render('admin/invoices/Index', [
-            'invoices' => $paginator,
+            'invoices' => $invoices,
         ]);
     }
 
@@ -106,7 +96,7 @@ class InvoiceController extends Controller
         });
 
         $data = [
-            'id'         => $invoice->id,            
+            'id'         => $invoice->id,
             'client_id'  => $invoice->client_id,
             'invoice_id' => $invoice->invoice_id,
             'issue_date' => $invoice->issue_date->format('Y-m-d'),
@@ -123,7 +113,7 @@ class InvoiceController extends Controller
         ]);
     }
 
-   public function update(InvoiceUpdateRequest $request, Invoice $invoice)
+    public function update(InvoiceUpdateRequest $request, Invoice $invoice)
     {
 
         // Use transaction to keep invoice and items in sync
@@ -191,7 +181,7 @@ class InvoiceController extends Controller
     {
         $invoice->items()->delete();
         $invoice->delete();
-        
+
         return redirect()->route('admin.invoices.index')->with('flash', [
             'message' => 'Invoice deleted successfully!',
             'type' => 'success'
@@ -200,14 +190,14 @@ class InvoiceController extends Controller
 
     public function download(Invoice $invoice)
     {
-      /*   $invoice->load('items', 'client');
+        /*   $invoice->load('items', 'client');
 
         return Pdf::loadView('admin.invoices.pdf', [
             'invoice' => $invoice
         ])
         ->setPaper('a4', 'portrait')
         ->stream("invoice-{$invoice->id}.pdf"); */
-   
+
         // Load related data
         $invoice->load('items', 'client');
 
@@ -218,7 +208,7 @@ class InvoiceController extends Controller
 
         // Generate PDF using the dompdf facade
         $pdf = Pdf::loadView('admin.invoices.pdf', $data)
-                  ->setPaper('a4', 'portrait');
+            ->setPaper('a4', 'portrait');
 
         // Return as download
         return $pdf->download('invoice_' . $invoice->inv_unique_id . '.pdf');

@@ -1,14 +1,15 @@
 <?php 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Client\ClientRequest;
-use App\Models\Client;
 use App\Models\User;
-use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
+use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\In;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Resources\InvoiceResource;
+use App\Http\Requests\Admin\Client\ClientRequest;
 
 class ClientController extends Controller
 {
@@ -169,7 +170,11 @@ class ClientController extends Controller
 
     public function invoices(Client $client)
     {
-        $invoices = $client->invoices()->get();
+        $paginator = $client->invoices()->paginate(10); 
+                
+        $invoices = $paginator->through(
+                    fn ($invoice) => (new InvoiceResource($invoice))->toArray(request())
+                );
 
         return Inertia::render('admin/clients/Invoices', [
             'client' => $client,
