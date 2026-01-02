@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Traits\HasAttachments;
 
 class Project extends Model
 {
+    
+    use HasAttachments;
+
     protected $table = 'projects';
 
     protected $fillable = [

@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Resources\ProjectResource;
 use App\Http\Requests\Admin\Project\ProjectRequest;
+use App\Http\Requests\Admin\Project\UploadFileRequest;
 
 class ProjectController extends Controller
 {
@@ -143,5 +144,30 @@ class ProjectController extends Controller
         });
 
         return response()->json($projects);
+    }
+
+
+    public function files(Project $project)
+    {        
+        $files = $project->attachments;
+
+        return Inertia::render('admin/projects/Files', [
+            'project' => $project,
+            'files' => $files,
+        ]);
+    }
+
+    public function uploadFile(UploadFileRequest $request, Project $project)
+    {
+        
+        if ($request->hasFile('files')) {
+            $files = $request->file('files');
+            $project->uploadFiles($files);
+        }
+        
+        return redirect()->route('admin.projects.files', $project->id)->with('flash', [
+            'message' => 'Files uploaded successfully!',
+            'type' => 'success'
+        ]);
     }
 }

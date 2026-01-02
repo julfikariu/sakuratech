@@ -30,6 +30,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
     // Manage Projects
     Route::resource('projects', ProjectController::class)->names('projects');
+    Route::get('projects/{project}/files', [ProjectController::class, 'files'])->name('projects.files');
+    Route::post('projects/{project}/upload-file', [ProjectController::class, 'uploadFile'])->name('projects.upload-file');
 
     // Manage Tickets
     Route::resource('tickets', TicketController::class)->names('tickets');

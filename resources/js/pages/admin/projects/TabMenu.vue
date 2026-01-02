@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { User, FileEdit, FolderOpen, Bell, FileText, Mail, ListChecks, RefreshCcw } from "lucide-vue-next";
-import { Separator } from "@/components/ui/separator";
-import { Link, usePage } from "@inertiajs/vue3";
-
+import { Separator } from '@/components/ui/separator';
+import { Link, usePage } from '@inertiajs/vue3';
+import { FileText, FolderOpen, RefreshCcw, User } from 'lucide-vue-next';
 
 const page = usePage();
-
-// Get the staff project_id from page props
 
 interface Props {
     project_id: number;
@@ -14,14 +11,16 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const view_profile = 'profile/' + props.project_id;
-const staff_files = 'staff/' + props.project_id + '/files';
-const change_password =  'staff/' + props.project_id + '/change-password';
+const view_details = '/admin/projects/' + props.project_id;
+const view_projects = '/admin/projects/' + props.project_id + '/files';
+const view_invoices = '/admin/projects/' + props.project_id + '/tasks';
+const change_password = '/admin/projects/' + props.project_id + '/milestone';
 
 const tabs = [
-    { icon: User, label: "Details", route: view_profile },
-    { icon: FolderOpen, label: "Files", route: staff_files },
-    { icon: RefreshCcw, label: "Change Password", route: change_password },
+    { icon: User, label: 'Details', route: view_details },
+    { icon: FolderOpen, label: 'Files', route: view_projects },
+    { icon: FileText, label: 'Tasks', route: view_invoices },
+    { icon: RefreshCcw, label: 'Milestones', route: change_password },
 ];
 
 const isTabActive = (tab: string) => {
