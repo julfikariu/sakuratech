@@ -10,6 +10,7 @@ import { Plus } from 'lucide-vue-next';
 import Modal from '@/components/Modal.vue';
 import { ref } from 'vue';
 import UploadFile from '@/components/files/UploadFile.vue';
+import FilesTable from '@/components/files/FilesTable.vue';
 
 
 interface Project {
@@ -56,7 +57,7 @@ const addNewFile = () => {
             <TabMenu :project_id="props.project.id" />
 
             <div class="">
-                <Card>
+                <Card class="gap-1">
                     <CardHeader>                       
                         <Button variant="save" class="w-25" @click="addNewFile">
                             <Plus class="w-4 h-4 mr-2" />
@@ -64,8 +65,8 @@ const addNewFile = () => {
                         </Button>
                     </CardHeader>
 
-                    <CardContent class=" space-y-4 text-sm">
-                        
+                    <CardContent class=" text-sm">
+                        <FilesTable :files="props.files" />                                                
                     </CardContent>
                 </Card>
             </div>

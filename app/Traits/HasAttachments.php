@@ -8,14 +8,22 @@ use Illuminate\Support\Facades\Storage;
 
 trait HasAttachments
 {
+
+    private function getDisk()
+    {
+        return config('filesystems.default');
+    }
     /**
      * Upload a single file.
      */
     public function uploadFile(UploadedFile $file): Attachment
     {
+        $disk = $this->getDisk();
+
         $path = $file->storeAs(
             "uploads/" . now()->format('Y/m/d'),
-            uniqid() .'.'. $file->extension()
+            uniqid() .'.'. $file->extension(),
+            $disk
         );
 
         return $this->attachments()->create([
@@ -48,7 +56,7 @@ trait HasAttachments
     public function deleteAttachment(Attachment $attachment): bool
     {
         if ($attachment->path) {
-            Storage::disk()->delete($attachment->path);
+            Storage::disk($this->getDisk())->delete($attachment->path);
         }
         return $attachment->delete();
     }

@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Admin;
 use Inertia\Inertia;
 use App\Models\Client;
 use App\Models\Project;
+use App\Models\Attachment;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Resources\ProjectResource;
 use App\Http\Requests\Admin\Project\ProjectRequest;
 use App\Http\Requests\Admin\Project\UploadFileRequest;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -151,9 +153,21 @@ class ProjectController extends Controller
     {        
         $files = $project->attachments;
 
+        $allfiles = $files->map(function ($file) {
+            return [
+                'id'         => $file->id,
+                'name'       => $file->name,
+                'path'       => $file->path,
+                'size'       => $file->size,
+                'type'       => $file->type,
+                'uploaded_at'=> $file->uploaded_at,        
+                // 'preview'    => asset('storage/' . $file->path),
+            ];
+        });
+
         return Inertia::render('admin/projects/Files', [
             'project' => $project,
-            'files' => $files,
+            'files' => $allfiles,
         ]);
     }
 
@@ -168,6 +182,28 @@ class ProjectController extends Controller
         return redirect()->route('admin.projects.files', $project->id)->with('flash', [
             'message' => 'Files uploaded successfully!',
             'type' => 'success'
+        ]);
+    }
+
+    public function deleteFile($attachment): RedirectResponse
+    {
+        $file = Attachment::find($attachment);
+
+        if ($file) {
+            if ($file->path) {
+                Storage::disk('public')->delete($file->path);
+            }
+            $file->delete();
+
+            return redirect()->route('admin.projects.files', $file->attachable_id)->with('flash', [
+                'message' => 'File deleted successfully!',
+                'type' => 'success'
+            ]);
+        }
+
+        return redirect()->route('admin.projects.files', $file->attachable_id)->with('flash', [
+            'message' => 'File not found!',
+            'type' => 'error'
         ]);
     }
 }

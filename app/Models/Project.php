@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\HasAttachments;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Project extends Model
 {
@@ -36,5 +37,16 @@ class Project extends Model
     public function client()
     {
         return $this->belongsTo(Client::class, 'client_id');
+    }
+
+
+    /**
+     * Get the checklists for the project.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough;
+     */
+    public function checklists()
+    {
+        return $this->hasManyThrough(Checklist::class, Task::class);
     }
 }
