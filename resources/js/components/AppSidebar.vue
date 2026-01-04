@@ -19,6 +19,7 @@ import { index as payments } from '@/routes/admin/payments';
 import { index as permissions } from '@/routes/admin/permission';
 import { index as projects } from '@/routes/admin/projects';
 import { index as roles } from '@/routes/admin/role';
+import { index as tasks } from '@/routes/admin/tasks';
 import { index as tickets } from '@/routes/admin/tickets';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
@@ -64,6 +65,11 @@ const mainNavItems: NavItem[] = [
         title: 'Projects',
         href: projects(),
         icon: SquareKanban,
+    },
+    {
+        title: 'Tasks',
+        href: tasks(),
+        icon: ListChecks,
     },
     {
         title: 'Tickets',

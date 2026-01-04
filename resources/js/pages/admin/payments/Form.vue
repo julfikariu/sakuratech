@@ -35,7 +35,7 @@ const paymentMethods = ['Credit Card','Bank Transfer','PayPal','Check','Cash','O
 
 function submitForm() {
     if (!props.is_edit){
-        form.put(paymentUpdate({ payment: form.id }).url(), {
+        form.put(paymentUpdate({ payment: form.id }).url, {
             onSuccess: () => {
                 form.reset();
                 close();

@@ -27,4 +27,14 @@ class Task extends Model
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
+
+    public function assignedTo()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'assigned_to');
+    }
+
+    protected $casts = [
+        'due_date' => 'date',
+    ];
 }
+
