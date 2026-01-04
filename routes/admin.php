@@ -41,6 +41,12 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
     // Manage Tasks
     Route::resource('tasks', TaskController::class)->names('tasks');
+    Route::get('tasks/{task}/checklists', [TaskController::class, 'checklists'])->name('tasks.checklists');
+    Route::get('tasks/{task}/checklists/create', [TaskController::class, 'createChecklist'])->name('tasks.checklists.create');
+    Route::post('tasks/{task}/checklists', [TaskController::class, 'storeChecklist'])->name('tasks.checklists.store');
+    Route::get('tasks/{task}/checklists/{checklist}/edit', [TaskController::class, 'editChecklist'])->name('tasks.checklists.edit');
+    Route::put('tasks/{task}/checklists/{checklist}', [TaskController::class, 'updateChecklist'])->name('tasks.checklists.update');
+    Route::delete('tasks/{task}/checklists/{checklist}', [TaskController::class, 'destroyChecklist'])->name('tasks.checklists.destroy');
 
     // Ticket replies
     Route::post('tickets/{ticket}/replies', [\App\Http\Controllers\Admin\TicketReplyController::class, 'store'])->name('tickets.replies.store');

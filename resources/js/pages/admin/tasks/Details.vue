@@ -2,6 +2,7 @@
 import PageHeader from '@/components/PageHeader.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from "@/routes";
+import TabMenu from './TabMenu.vue';
 
 interface Task {
     id: number;
@@ -26,6 +27,7 @@ const breadcrumbs = [
 <template>
     <AppLayout>
         <div class="p-6">
+            <TabMenu :task_id="props.task.id" />
             <PageHeader :title="props.task.title" description="" :breadcrumbs="breadcrumbs" />
 
             <div class="rounded-lg border bg-card p-6">
