@@ -58,8 +58,23 @@ class TaskController extends Controller
     {
         $data = (new TaskResource($task))->toArray(request());
 
+        $comments = $task->comments()->with('user')->orderBy('created_at', 'asc')->get()->map(function ($c) use ($task) {
+            return [
+                'id' => $c->id,
+                'body' => $c->body,
+                'created_at' => $c->created_at?->format('d M Y, h:i A'),
+                'user' => [
+                    'id' => $c->user?->id,
+                    'name' => $c->user?->name,
+                ],
+                'can_edit' => auth()->id() === $c->user_id,
+                'can_delete' => auth()->id() === $c->user_id,
+            ];
+        });
+
         return Inertia::render('admin/tasks/Details', [
             'task' => $data,
+            'comments' => $comments->toArray(),
         ]);
     }
 
@@ -148,6 +163,76 @@ class TaskController extends Controller
         return redirect()->route('admin.tasks.checklists', $task->id)->with('flash', [
             'message' => 'Checklist item created successfully!',
             'type' => 'success'
+        ]);
+    }
+
+    // Comments
+    public function storeComment(\Illuminate\Http\Request $request, Task $task)
+    {
+        $data = $request->validate([
+            'body' => ['required', 'string', 'max:1000'],
+        ]);
+
+        $task->comments()->create([
+            'body' => $data['body'],
+            'user_id' => auth()->id(),
+        ]);
+
+        return redirect()->route('admin.tasks.show', $task->id)->with('flash', [
+            'message' => 'Comment posted!',
+            'type' => 'success',
+        ]);
+    }
+
+    public function updateComment(\Illuminate\Http\Request $request, Task $task, \App\Models\Comment $comment)
+    {
+        if ($comment->commentable_id !== $task->id || $comment->commentable_type !== Task::class) {
+            return redirect()->route('admin.tasks.show', $task->id)->with('flash', [
+                'message' => 'Comment not found for this task!',
+                'type' => 'error',
+            ]);
+        }
+
+        if ($comment->user_id !== auth()->id()) {
+            return redirect()->route('admin.tasks.show', $task->id)->with('flash', [
+                'message' => 'Unauthorized',
+                'type' => 'error',
+            ]);
+        }
+
+        $data = $request->validate([
+            'body' => ['required', 'string', 'max:1000'],
+        ]);
+
+        $comment->update(['body' => $data['body']]);
+
+        return redirect()->route('admin.tasks.show', $task->id)->with('flash', [
+            'message' => 'Comment updated!',
+            'type' => 'success',
+        ]);
+    }
+
+    public function destroyComment(Task $task, \App\Models\Comment $comment)
+    {
+        if ($comment->commentable_id !== $task->id || $comment->commentable_type !== Task::class) {
+            return redirect()->route('admin.tasks.show', $task->id)->with('flash', [
+                'message' => 'Comment not found for this task!',
+                'type' => 'error',
+            ]);
+        }
+
+        if ($comment->user_id !== auth()->id()) {
+            return redirect()->route('admin.tasks.show', $task->id)->with('flash', [
+                'message' => 'Unauthorized',
+                'type' => 'error',
+            ]);
+        }
+
+        $comment->delete();
+
+        return redirect()->route('admin.tasks.show', $task->id)->with('flash', [
+            'message' => 'Comment deleted!',
+            'type' => 'success',
         ]);
     }
 

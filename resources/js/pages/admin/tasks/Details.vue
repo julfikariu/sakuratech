@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import PageHeader from '@/components/PageHeader.vue';
+import CommentForm from '@/components/tasks/CommentForm.vue';
+import Comments from '@/components/tasks/Comments.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from "@/routes";
 import TabMenu from './TabMenu.vue';
@@ -15,7 +17,7 @@ interface Task {
     priority?: string;
 }
 
-const props = defineProps<{ task: Task }>();
+const props = defineProps<{ task: Task, comments: any[] }>();
 
 const breadcrumbs = [
     { title: 'Dashboard', href: dashboard().url },
@@ -54,6 +56,10 @@ const breadcrumbs = [
                     <p class="text-sm text-muted-foreground" v-if="props.task.description">{{ props.task.description }}</p>
                     <p class="text-sm text-muted-foreground" v-else>No description provided.</p>
                 </div>
+
+                <Comments :comments="props.comments || []" :taskId="props.task.id" />
+                <CommentForm :taskId="props.task.id" />
+
             </div>
         </div>
     </AppLayout>

@@ -48,6 +48,11 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::put('tasks/{task}/checklists/{checklist}', [TaskController::class, 'updateChecklist'])->name('tasks.checklists.update');
     Route::delete('tasks/{task}/checklists/{checklist}', [TaskController::class, 'destroyChecklist'])->name('tasks.checklists.destroy');
 
+    // Task comments
+    Route::post('tasks/{task}/comments', [TaskController::class, 'storeComment'])->name('tasks.comments.store');
+    Route::put('tasks/{task}/comments/{comment}', [TaskController::class, 'updateComment'])->name('tasks.comments.update');
+    Route::delete('tasks/{task}/comments/{comment}', [TaskController::class, 'destroyComment'])->name('tasks.comments.destroy');
+
     // Ticket replies
     Route::post('tickets/{ticket}/replies', [\App\Http\Controllers\Admin\TicketReplyController::class, 'store'])->name('tickets.replies.store');
     Route::delete('tickets/{ticket}/replies/{reply}', [\App\Http\Controllers\Admin\TicketReplyController::class, 'destroy'])->name('tickets.replies.destroy');
