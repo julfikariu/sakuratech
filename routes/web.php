@@ -3,6 +3,7 @@
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Admin\DashboardController;
 
@@ -24,3 +25,8 @@ Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['aut
 require __DIR__.'/settings.php';
 
 require __DIR__.'/admin.php';
+
+ Route::get('/comments/{type}/{id}', [CommentController::class, 'index']);
+    Route::post('/comments', [CommentController::class, 'store']);
+    Route::put('/comments/{comment}', [CommentController::class, 'update']);
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);

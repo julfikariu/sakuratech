@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { store as storeComment } from '@/routes/admin/tasks/comments';
+import { store as storeComment } from '@/routes/admin/tasks/checklists/comments';
 import axios from 'axios';
 import { ref } from 'vue';
 
 const props = defineProps<{
     taskId: number;
+    checklistId: number;
 }>();
 const emit = defineEmits<{
     (e: 'created', payload: any): void
@@ -19,7 +20,7 @@ const processing = ref(false);
 async function submit() {
     processing.value = true;
     try {
-        const res = await axios.post(storeComment({ task: props.taskId }).url, { body: body.value });
+        const res = await axios.post(storeComment({ task: props.taskId, checklist: props.checklistId }).url, { body: body.value });
         const comment = res.data;
         body.value = '';
         errors.value = {};
@@ -35,11 +36,11 @@ async function submit() {
 </script>
 
 <template>
-    <div class="mt-6 bg-white dark:bg-gray-900 rounded shadow p-4">
-        <h3 class="font-semibold mb-2">Post a comment</h3>
+    <div class="mt-4 bg-white dark:bg-gray-900 rounded shadow p-3">
+        <h4 class="font-semibold mb-2">Add a comment</h4>
         <form @submit.prevent="submit">
-            <div class="mb-3">
-                <Textarea v-model="body" rows="4" />
+            <div class="mb-2">
+                <Textarea v-model="body" rows="3" />
                 <div class="text-sm text-red-600 mt-1" v-if="errors.body">{{ errors.body }}</div>
             </div>
             <div class="flex gap-2">

@@ -74,7 +74,7 @@ class TaskController extends Controller
 
         return Inertia::render('admin/tasks/Details', [
             'task' => $data,
-            'comments' => $comments->toArray(),
+            'comments' => fn () => $comments->toArray(),
         ]);
     }
 
@@ -131,10 +131,25 @@ class TaskController extends Controller
     public function checklists(Task $task)
     {
         $checklists = $task->checklists->map(function ($c) {
+            $comments = $c->comments()->with('user')->orderBy('created_at', 'asc')->get()->map(function ($cc) {
+                return [
+                    'id' => $cc->id,
+                    'body' => $cc->body,
+                    'created_at' => $cc->created_at?->format('d M Y, h:i A'),
+                    'user' => [
+                        'id' => $cc->user?->id,
+                        'name' => $cc->user?->name,
+                    ],
+                    'can_edit' => auth()->id() === $cc->user_id,
+                    'can_delete' => auth()->id() === $cc->user_id,
+                ];
+            })->toArray();
+
             return [
                 'id' => $c->id,
                 'title' => $c->title,
                 'created_at' => $c->created_at?->format('d M Y, h:i A'),
+                'comments' => $comments,
             ];
         });
 
@@ -173,10 +188,28 @@ class TaskController extends Controller
             'body' => ['required', 'string', 'max:1000'],
         ]);
 
-        $task->comments()->create([
+        $comment = $task->comments()->create([
             'body' => $data['body'],
             'user_id' => auth()->id(),
         ]);
+
+        $comment->load('user');
+
+        $payload = [
+            'id' => $comment->id,
+            'body' => $comment->body,
+            'created_at' => $comment->created_at?->format('d M Y, h:i A'),
+            'user' => [
+                'id' => $comment->user?->id,
+                'name' => $comment->user?->name,
+            ],
+            'can_edit' => auth()->id() === $comment->user_id,
+            'can_delete' => auth()->id() === $comment->user_id,
+        ];
+
+        if ($request->wantsJson()) {
+            return response()->json($payload, 201);
+        }
 
         return redirect()->route('admin.tasks.show', $task->id)->with('flash', [
             'message' => 'Comment posted!',
@@ -205,6 +238,24 @@ class TaskController extends Controller
         ]);
 
         $comment->update(['body' => $data['body']]);
+        $comment->refresh();
+        $comment->load('user');
+
+        $payload = [
+            'id' => $comment->id,
+            'body' => $comment->body,
+            'created_at' => $comment->created_at?->format('d M Y, h:i A'),
+            'user' => [
+                'id' => $comment->user?->id,
+                'name' => $comment->user?->name,
+            ],
+            'can_edit' => auth()->id() === $comment->user_id,
+            'can_delete' => auth()->id() === $comment->user_id,
+        ];
+
+        if ($request->wantsJson()) {
+            return response()->json($payload, 200);
+        }
 
         return redirect()->route('admin.tasks.show', $task->id)->with('flash', [
             'message' => 'Comment updated!',
@@ -229,6 +280,10 @@ class TaskController extends Controller
         }
 
         $comment->delete();
+
+        if (request()->wantsJson()) {
+            return response()->json(['success' => true], 200);
+        }
 
         return redirect()->route('admin.tasks.show', $task->id)->with('flash', [
             'message' => 'Comment deleted!',
@@ -292,5 +347,86 @@ class TaskController extends Controller
             'message' => 'Checklist deleted successfully!',
             'type' => 'success'
         ]);
+    }
+
+    // Checklist comments
+    public function storeChecklistComment(\Illuminate\Http\Request $request, Task $task, \App\Models\Checklist $checklist)
+    {
+        if ($checklist->task_id !== $task->id) {
+            return response()->json(['message' => 'Checklist not found for this task!'], 404);
+        }
+
+        $data = $request->validate([
+            'body' => ['required', 'string', 'max:1000'],
+        ]);
+
+        $comment = $checklist->comments()->create([
+            'body' => $data['body'],
+            'user_id' => auth()->id(),
+        ]);
+
+        $comment->load('user');
+
+        $payload = [
+            'id' => $comment->id,
+            'body' => $comment->body,
+            'created_at' => $comment->created_at?->format('d M Y, h:i A'),
+            'user' => [
+                'id' => $comment->user?->id,
+                'name' => $comment->user?->name,
+            ],
+            'can_edit' => auth()->id() === $comment->user_id,
+            'can_delete' => auth()->id() === $comment->user_id,
+        ];
+
+        return response()->json($payload, 201);
+    }
+
+    public function updateChecklistComment(\Illuminate\Http\Request $request, Task $task, \App\Models\Checklist $checklist, \App\Models\Comment $comment)
+    {
+        if ($checklist->task_id !== $task->id || $comment->commentable_id !== $checklist->id || $comment->commentable_type !== \App\Models\Checklist::class) {
+            return response()->json(['message' => 'Comment not found for this checklist!'], 404);
+        }
+
+        if ($comment->user_id !== auth()->id()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        $data = $request->validate([
+            'body' => ['required', 'string', 'max:1000'],
+        ]);
+
+        $comment->update(['body' => $data['body']]);
+        $comment->refresh();
+        $comment->load('user');
+
+        $payload = [
+            'id' => $comment->id,
+            'body' => $comment->body,
+            'created_at' => $comment->created_at?->format('d M Y, h:i A'),
+            'user' => [
+                'id' => $comment->user?->id,
+                'name' => $comment->user?->name,
+            ],
+            'can_edit' => auth()->id() === $comment->user_id,
+            'can_delete' => auth()->id() === $comment->user_id,
+        ];
+
+        return response()->json($payload, 200);
+    }
+
+    public function destroyChecklistComment(Task $task, \App\Models\Checklist $checklist, \App\Models\Comment $comment)
+    {
+        if ($checklist->task_id !== $task->id || $comment->commentable_id !== $checklist->id || $comment->commentable_type !== \App\Models\Checklist::class) {
+            return response()->json(['message' => 'Comment not found for this checklist!'], 404);
+        }
+
+        if ($comment->user_id !== auth()->id()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        $comment->delete();
+
+        return response()->json(['success' => true], 200);
     }
 }

@@ -53,6 +53,11 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::put('tasks/{task}/comments/{comment}', [TaskController::class, 'updateComment'])->name('tasks.comments.update');
     Route::delete('tasks/{task}/comments/{comment}', [TaskController::class, 'destroyComment'])->name('tasks.comments.destroy');
 
+    // Checklist comments
+    Route::post('tasks/{task}/checklists/{checklist}/comments', [TaskController::class, 'storeChecklistComment'])->name('tasks.checklists.comments.store');
+    Route::put('tasks/{task}/checklists/{checklist}/comments/{comment}', [TaskController::class, 'updateChecklistComment'])->name('tasks.checklists.comments.update');
+    Route::delete('tasks/{task}/checklists/{checklist}/comments/{comment}', [TaskController::class, 'destroyChecklistComment'])->name('tasks.checklists.comments.destroy');
+
     // Ticket replies
     Route::post('tickets/{ticket}/replies', [\App\Http\Controllers\Admin\TicketReplyController::class, 'store'])->name('tickets.replies.store');
     Route::delete('tickets/{ticket}/replies/{reply}', [\App\Http\Controllers\Admin\TicketReplyController::class, 'destroy'])->name('tickets.replies.destroy');
@@ -65,4 +70,9 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::resource('payments', PaymentController::class)->names('payments');
 
     Route::get('/get-projects-by-client/{client}', [ProjectController::class, 'getProjectsByClient'])->name('get-projects-by-client');
+
+
+
+
+    
 });

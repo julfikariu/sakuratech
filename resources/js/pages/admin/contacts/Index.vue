@@ -60,9 +60,7 @@ const breadcrumbs: BreadcrumbItem[] = [
             </PageHeader>
 
             <div class="flex justify-between items-center w-full">
-                <Button variant="save" @click="">
-                    <Plus /> Add New
-                </Button>
+                <div></div>
                 <div class="w-1/3">
                     <Search />
                 </div>
@@ -89,13 +87,9 @@ const breadcrumbs: BreadcrumbItem[] = [
                             <TableCell>{{ item.message }}</TableCell>
                             <TableCell>{{ item.created_at }}</TableCell>
                             <TableCell class="text-right flex gap-2 justify-end">
-
                                 <Button variant="details" size="sm">
                                     <Eye class="w-4 h-4" />
-                                </Button>
-                                <Button variant="edit" size="sm">
-                                    <SquarePen class="w-4 h-4" />
-                                </Button>
+                                </Button>                                
                                 <Button variant="delete" size="sm">
                                     <Trash2Icon class="w-4 h-4" />
                                 </Button>

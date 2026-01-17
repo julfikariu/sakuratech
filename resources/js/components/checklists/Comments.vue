@@ -1,21 +1,15 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { destroy as destroyComment, update as updateComment } from '@/routes/admin/tasks/comments';
+import { destroy as destroyComment, update as updateComment } from '@/routes/admin/tasks/checklists/comments';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { ref, watch } from 'vue';
 
 const props = defineProps<{
-    comments: Array<{
-        id: number;
-        body: string;
-        user: { id: number; name: string };
-        created_at: string;
-        can_edit?: boolean;
-        can_delete?: boolean;
-    }>;
+    comments: Array<any>;
     taskId: number;
+    checklistId: number;
 }>();
 
 const list = ref<Array<any>>(props.comments ? [...props.comments] : []);
@@ -24,11 +18,7 @@ watch(() => props.comments, (val) => {
 });
 
 const editingId = ref<number | null>(null);
-const editForm = ref<{
-    body: string;
-    errors: { [key: string]: any };
-    processing: boolean;
-}>({ body: '', errors: {}, processing: false });
+const editForm = ref<{ body: string; errors: { [key: string]: any }; processing: boolean }>({ body: '', errors: {}, processing: false });
 
 function confirmDelete(commentId: number) {
     Swal.fire({
@@ -50,7 +40,7 @@ function confirmDelete(commentId: number) {
             });
 
             try {
-                await axios.delete(destroyComment({ task: props.taskId, comment: commentId }).url);
+                await axios.delete(destroyComment({ task: props.taskId, checklist: props.checklistId, comment: commentId }).url);
                 list.value = list.value.filter((c) => c.id !== commentId);
                 Swal.close();
                 Swal.fire('Deleted!', `The comment has been deleted.`, 'success');
@@ -76,7 +66,7 @@ function cancelEdit() {
 async function submitEdit(commentId: number) {
     editForm.value.processing = true;
     try {
-        const res = await axios.put(updateComment({ task: props.taskId, comment: commentId }).url, { body: editForm.value.body });
+        const res = await axios.put(updateComment({ task: props.taskId, checklist: props.checklistId, comment: commentId }).url, { body: editForm.value.body });
         const updated = res.data;
         const idx = list.value.findIndex((c) => c.id === commentId);
         if (idx !== -1) list.value[idx] = updated;
@@ -92,10 +82,9 @@ async function submitEdit(commentId: number) {
 </script>
 
 <template>
-    <div class="mt-6">
-        <h3 class="text-lg font-medium mb-3">Comments</h3>
+    <div class="mt-4">
         <div class="space-y-4">
-            <div v-for="c in list" :key="c.id" class="p-4 bg-white dark:bg-gray-900 rounded shadow">
+            <div v-for="c in list" :key="c.id" class="p-3 bg-white dark:bg-gray-900 rounded shadow">
                 <div class="flex justify-between items-start">
                     <div>
                         <div class="font-semibold">{{ c.user.name }}</div>

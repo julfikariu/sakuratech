@@ -5,6 +5,9 @@ import Comments from '@/components/tasks/Comments.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from "@/routes";
 import TabMenu from './TabMenu.vue';
+import { router } from '@inertiajs/vue3';
+import CommentSection from '@/components/comment/CommentSection.vue';
+
 
 interface Task {
     id: number;
@@ -17,7 +20,17 @@ interface Task {
     priority?: string;
 }
 
+import { ref } from 'vue';
+
 const props = defineProps<{ task: Task, comments: any[] }>();
+
+// const comments = ref(props.comments || []);
+
+function onCommentCreated() {
+    router.reload({
+        only: ['comments'],
+    });
+}
 
 const breadcrumbs = [
     { title: 'Dashboard', href: dashboard().url },
@@ -57,8 +70,11 @@ const breadcrumbs = [
                     <p class="text-sm text-muted-foreground" v-else>No description provided.</p>
                 </div>
 
-                <Comments :comments="props.comments || []" :taskId="props.task.id" />
-                <CommentForm :taskId="props.task.id" />
+                <!-- <Comments :comments="comments" :taskId="props.task.id" />
+                <CommentForm :taskId="props.task.id" @created="onCommentCreated" /> -->
+
+                <CommentSection commentable-type="task" :commentable-id="task.id" />
+
 
             </div>
         </div>
