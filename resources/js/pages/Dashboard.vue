@@ -3,7 +3,25 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
-import PlaceholderPattern from '../components/PlaceholderPattern.vue';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Users, Briefcase, FileText, CreditCard } from 'lucide-vue-next';
+import ProjectTable from '@/components/projects/ProjectTable.vue';
+import InvoiceTable from '@/components/invoice/InvoiceTable.vue';
+import type { PaginatedProjects } from '@/types/project';
+import type { PaginatedInvoices } from '@/types/invoice';
+
+interface Stats {
+    total_clients: number;
+    total_projects: number;
+    total_invoices: number;
+    total_users: number;
+}
+
+const props = defineProps<{
+    stats: Stats;
+    recent_projects: PaginatedProjects;
+    recent_invoices: PaginatedInvoices;
+}>();
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -17,30 +35,58 @@ const breadcrumbs: BreadcrumbItem[] = [
     <Head title="Dashboard" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div
-            class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4"
-        >
-            <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-                <div
-                    class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
-                >
-                    <PlaceholderPattern />
-                </div>
-                <div
-                    class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
-                >
-                    <PlaceholderPattern />
-                </div>
-                <div
-                    class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border"
-                >
-                    <PlaceholderPattern />
-                </div>
+        <div class="flex flex-1 flex-col gap-4 p-4 pt-4">
+            <!-- Stats Grid -->
+            <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                <Card>
+                    <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle class="text-sm font-medium"> Total Clients </CardTitle>
+                        <Users class="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div class="text-2xl font-bold">{{ stats.total_clients }}</div>
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle class="text-sm font-medium"> Total Projects </CardTitle>
+                        <Briefcase class="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div class="text-2xl font-bold">{{ stats.total_projects }}</div>
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle class="text-sm font-medium"> Total Invoices </CardTitle>
+                        <FileText class="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div class="text-2xl font-bold">{{ stats.total_invoices }}</div>
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle class="text-sm font-medium"> Total Users </CardTitle>
+                        <CreditCard class="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div class="text-2xl font-bold">{{ stats.total_users }}</div>
+                    </CardContent>
+                </Card>
             </div>
-            <div
-                class="relative min-h-[100vh] flex-1 rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border"
-            >
-                <PlaceholderPattern />
+
+            <!-- Recent Activity using Reused Components -->
+            <div class="flex flex-col gap-4">
+                <div class="flex flex-col gap-2">
+                    <h3 class="text-lg font-semibold tracking-tight">Recent Projects</h3>
+                    <ProjectTable :projects="props.recent_projects" :show-client-column="true" />
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <h3 class="text-lg font-semibold tracking-tight">Recent Invoices</h3>
+                    <InvoiceTable :invoices="props.recent_invoices" :show-client-column="true" />
+                </div>
             </div>
         </div>
     </AppLayout>

@@ -62,7 +62,9 @@ class ContactController extends Controller
     public function show(Contact $contact)
     {
         return inertia('admin/contacts/Show', [
-            'contact' => $contact,
+            'contact' => array_merge($contact->toArray(), [
+                'created_at' => $contact->created_at?->format('d M Y, h:i A'),
+            ]),
         ]);
     }
 

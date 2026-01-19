@@ -20,6 +20,9 @@ import NoResults from '@/components/NoResults.vue';
 import type { Contact, PaginationLink } from '@/types/models';
 import Pagination from '@/components/Pagination.vue';
 import Search from './Search.vue';
+import ModalLink from '@/components/ModalLink.vue';
+import { show as contactShow, destroy as contactDestroy } from '@/routes/admin/contacts';
+import { deleteBySwal } from '@/composables/useSwal';
 
 interface PaginatedContacts {
     data: Contact[];
@@ -87,10 +90,10 @@ const breadcrumbs: BreadcrumbItem[] = [
                             <TableCell>{{ item.message }}</TableCell>
                             <TableCell>{{ item.created_at }}</TableCell>
                             <TableCell class="text-right flex gap-2 justify-end">
-                                <Button variant="details" size="sm">
+                                <ModalLink :href="contactShow(item.id).url" :itemid="item.id" variant="details" :size="'sm'">
                                     <Eye class="w-4 h-4" />
-                                </Button>                                
-                                <Button variant="delete" size="sm">
+                                </ModalLink>                               
+                                <Button @click="deleteBySwal(contactDestroy({ contact: item.id }).url, 'contact')" variant="delete" size="sm">
                                     <Trash2Icon class="w-4 h-4" />
                                 </Button>
                             </TableCell>
