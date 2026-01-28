@@ -3,5 +3,29 @@
 		{
 			"path": "."
 		}
-	]
+    ],
+    "settings": {
+        "sqltools.connections": [
+            {
+                "mysqlOptions": {
+                    "authProtocol": "default",
+                    "enableSsl": "Disabled"
+                },
+                "ssh": "Enabled",
+                "previewLimit": 50,
+                "server": "localhost",
+                "port": 3306,
+                "sshOptions": {
+                    "port": 22,
+                    "username": "ec2-user",
+                    "privateKeyPath": "C:\\Users\\Julfikar Ali\\OneDrive\\Desktop\\aws_practice\\julgfikartest.pem",
+                    "host": "3.111.42.128"
+                },
+                "driver": "MySQL",
+                "name": "hrm_db",
+                "database": "julfikar-tt001",
+                "username": "root"
+            }
+        ]
+    }
 }

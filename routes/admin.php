@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\ClientController;
@@ -12,67 +13,66 @@ use App\Http\Controllers\Admin\PaymentController;
 
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
-    // Resourceful routes for contacts (index, create, store, show, edit, update, destroy)
-    Route::resource('contacts', ContactController::class)->names('contacts');
+	// Resourceful routes for contacts (index, create, store, show, edit, update, destroy)
+	Route::resource('contacts', ContactController::class)->names('contacts');
 
-    // Manage Roles
-    Route::resource('role', RoleController::class)->except('create', 'show', 'edit');
-  
-    // Manage Permissions
-    Route::resource('permission', PermissionController::class)->except('create', 'show', 'edit');
+	// Manage Roles
+	Route::resource('role', RoleController::class)->except('create', 'show', 'edit');
 
-    // Manage Clients
-    Route::resource('clients', ClientController::class)->names('clients');
-    Route::get('clients/{client}/projects', [ClientController::class, 'projects'])->name('clients.projects');
-    Route::get('clients/{client}/invoices', [ClientController::class, 'invoices'])->name('clients.invoices');
-    Route::get('clients/{client}/payments', [ClientController::class, 'payments'])->name('clients.payments');
-    Route::get('clients/{client}/change-password', [ClientController::class, 'changePasswordForm'])->name('clients.change-password.form');
-    Route::post('clients/{client}/change-password', [ClientController::class, 'changePassword'])->name('clients.change-password');
+	// Manage Permissions
+	Route::resource('permission', PermissionController::class)->except('create', 'show', 'edit');
 
-    // Manage Projects
-    Route::resource('projects', ProjectController::class)->names('projects');
-    Route::get('projects/{project}/files', [ProjectController::class, 'files'])->name('projects.files');
-    Route::post('projects/{project}/upload-file', [ProjectController::class, 'uploadFile'])->name('projects.upload-file');
-    Route::delete('projects/delete-file/{attachment}', [ProjectController::class, 'deleteFile'])->name('projects.delete-file');
+	// Assign Permissions to Roles
+	Route::get('role/{role}/permissions', [RoleController::class, 'editPermissions'])->name('role.permissions.edit');
+	Route::put('role/{role}/permissions', [RoleController::class, 'updatePermissions'])->name('role.permissions.update');
 
-    // Manage Tickets
-    Route::resource('tickets', TicketController::class)->names('tickets');
-    Route::post('tickets/{ticket}/change-status', [\App\Http\Controllers\Admin\TicketController::class, 'changeStatus'])->name('tickets.change-status');
+	// Manage Clients
+	Route::resource('clients', ClientController::class)->names('clients');
+	Route::get('clients/{client}/projects', [ClientController::class, 'projects'])->name('clients.projects');
+	Route::get('clients/{client}/invoices', [ClientController::class, 'invoices'])->name('clients.invoices');
+	Route::get('clients/{client}/payments', [ClientController::class, 'payments'])->name('clients.payments');
+	Route::get('clients/{client}/change-password', [ClientController::class, 'changePasswordForm'])->name('clients.change-password.form');
+	Route::post('clients/{client}/change-password', [ClientController::class, 'changePassword'])->name('clients.change-password');
 
-    // Manage Tasks
-    Route::resource('tasks', TaskController::class)->names('tasks');
-    Route::get('tasks/{task}/checklists', [TaskController::class, 'checklists'])->name('tasks.checklists');
-    Route::get('tasks/{task}/checklists/create', [TaskController::class, 'createChecklist'])->name('tasks.checklists.create');
-    Route::post('tasks/{task}/checklists', [TaskController::class, 'storeChecklist'])->name('tasks.checklists.store');
-    Route::get('tasks/{task}/checklists/{checklist}/edit', [TaskController::class, 'editChecklist'])->name('tasks.checklists.edit');
-    Route::put('tasks/{task}/checklists/{checklist}', [TaskController::class, 'updateChecklist'])->name('tasks.checklists.update');
-    Route::delete('tasks/{task}/checklists/{checklist}', [TaskController::class, 'destroyChecklist'])->name('tasks.checklists.destroy');
+	// Manage Projects
+	Route::resource('projects', ProjectController::class)->names('projects');
+	Route::get('projects/{project}/files', [ProjectController::class, 'files'])->name('projects.files');
+	Route::post('projects/{project}/upload-file', [ProjectController::class, 'uploadFile'])->name('projects.upload-file');
+	Route::delete('projects/delete-file/{attachment}', [ProjectController::class, 'deleteFile'])->name('projects.delete-file');
 
-    // Task comments
-    Route::post('tasks/{task}/comments', [TaskController::class, 'storeComment'])->name('tasks.comments.store');
-    Route::put('tasks/{task}/comments/{comment}', [TaskController::class, 'updateComment'])->name('tasks.comments.update');
-    Route::delete('tasks/{task}/comments/{comment}', [TaskController::class, 'destroyComment'])->name('tasks.comments.destroy');
+	// Manage Tickets
+	Route::resource('tickets', TicketController::class)->names('tickets');
+	Route::post('tickets/{ticket}/change-status', [\App\Http\Controllers\Admin\TicketController::class, 'changeStatus'])->name('tickets.change-status');
 
-    // Checklist comments
-    Route::post('tasks/{task}/checklists/{checklist}/comments', [TaskController::class, 'storeChecklistComment'])->name('tasks.checklists.comments.store');
-    Route::put('tasks/{task}/checklists/{checklist}/comments/{comment}', [TaskController::class, 'updateChecklistComment'])->name('tasks.checklists.comments.update');
-    Route::delete('tasks/{task}/checklists/{checklist}/comments/{comment}', [TaskController::class, 'destroyChecklistComment'])->name('tasks.checklists.comments.destroy');
+	// Manage Tasks
+	Route::resource('tasks', TaskController::class)->names('tasks');
+	Route::get('tasks/{task}/checklists', [TaskController::class, 'checklists'])->name('tasks.checklists');
+	Route::get('tasks/{task}/checklists/create', [TaskController::class, 'createChecklist'])->name('tasks.checklists.create');
+	Route::post('tasks/{task}/checklists', [TaskController::class, 'storeChecklist'])->name('tasks.checklists.store');
+	Route::get('tasks/{task}/checklists/{checklist}/edit', [TaskController::class, 'editChecklist'])->name('tasks.checklists.edit');
+	Route::put('tasks/{task}/checklists/{checklist}', [TaskController::class, 'updateChecklist'])->name('tasks.checklists.update');
+	Route::delete('tasks/{task}/checklists/{checklist}', [TaskController::class, 'destroyChecklist'])->name('tasks.checklists.destroy');
 
-    // Ticket replies
-    Route::post('tickets/{ticket}/replies', [\App\Http\Controllers\Admin\TicketReplyController::class, 'store'])->name('tickets.replies.store');
-    Route::delete('tickets/{ticket}/replies/{reply}', [\App\Http\Controllers\Admin\TicketReplyController::class, 'destroy'])->name('tickets.replies.destroy');
+	// Task comments
+	Route::post('tasks/{task}/comments', [TaskController::class, 'storeComment'])->name('tasks.comments.store');
+	Route::put('tasks/{task}/comments/{comment}', [TaskController::class, 'updateComment'])->name('tasks.comments.update');
+	Route::delete('tasks/{task}/comments/{comment}', [TaskController::class, 'destroyComment'])->name('tasks.comments.destroy');
 
-    // Manage Invoices
-    Route::resource('invoices', InvoiceController::class)->names('invoices');
-    Route::get('invoices/{invoice}/download', [InvoiceController::class, 'download'])->name('invoices.download');
+	// Checklist comments
+	Route::post('tasks/{task}/checklists/{checklist}/comments', [TaskController::class, 'storeChecklistComment'])->name('tasks.checklists.comments.store');
+	Route::put('tasks/{task}/checklists/{checklist}/comments/{comment}', [TaskController::class, 'updateChecklistComment'])->name('tasks.checklists.comments.update');
+	Route::delete('tasks/{task}/checklists/{checklist}/comments/{comment}', [TaskController::class, 'destroyChecklistComment'])->name('tasks.checklists.comments.destroy');
 
-    // Manage Payments
-    Route::resource('payments', PaymentController::class)->names('payments');
+	// Ticket replies
+	Route::post('tickets/{ticket}/replies', [\App\Http\Controllers\Admin\TicketReplyController::class, 'store'])->name('tickets.replies.store');
+	Route::delete('tickets/{ticket}/replies/{reply}', [\App\Http\Controllers\Admin\TicketReplyController::class, 'destroy'])->name('tickets.replies.destroy');
 
-    Route::get('/get-projects-by-client/{client}', [ProjectController::class, 'getProjectsByClient'])->name('get-projects-by-client');
+	// Manage Invoices
+	Route::resource('invoices', InvoiceController::class)->names('invoices');
+	Route::get('invoices/{invoice}/download', [InvoiceController::class, 'download'])->name('invoices.download');
 
+	// Manage Payments
+	Route::resource('payments', PaymentController::class)->names('payments');
 
-
-
-    
+	Route::get('/get-projects-by-client/{client}', [ProjectController::class, 'getProjectsByClient'])->name('get-projects-by-client');
 });

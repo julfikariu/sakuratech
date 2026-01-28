@@ -17,7 +17,7 @@ class RoleController extends Controller
     public function index()
     {
         $roles = Role::select(['id', 'name', 'description'])->get();
-        
+
         return Inertia::render('admin/role/Index', [
             'roles'=> $roles
         ]);
@@ -43,7 +43,7 @@ class RoleController extends Controller
 
         return redirect()->back()->with('flash', [
             'message' => 'Role created successfully!',
-            'type' => 'success' 
+            'type' => 'success'
         ]);
     }
 
@@ -75,7 +75,7 @@ class RoleController extends Controller
 
         return redirect()->back()->with('flash', [
             'message' => 'Role Updated successfully!',
-            'type' => 'success' 
+            'type' => 'success'
         ]);
     }
 
@@ -86,5 +86,40 @@ class RoleController extends Controller
     {
         $role->delete();
         return redirect()->back();
+    }
+
+    /**
+     * Show the form for editing the permissions of a role.
+     */
+    public function editPermissions(Role $role)
+    {
+        $role->load('permissions');
+
+        $allPermissions = \Spatie\Permission\Models\Permission::all();
+
+        return Inertia::render('admin/role/EditPermissionsModal', [
+            'role' => $role,
+            'allPermissions' => $allPermissions,
+        ]);
+    }
+
+    /**
+     * Update the permissions of a role.
+     */
+    public function updatePermissions(Request $request, Role $role)
+    {
+        $data = $request->validate([
+            'permissions' => 'nullable|array',
+            'permissions.*' => 'string|exists:permissions,name',
+        ]);
+
+        $permissions = $data['permissions'] ?? [];
+
+        $role->syncPermissions($permissions);
+
+        return redirect()->back()->with('flash', [
+            'message' => 'Role permissions updated successfully!',
+            'type' => 'success'
+        ]);
     }
 }

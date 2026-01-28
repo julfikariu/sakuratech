@@ -14,6 +14,13 @@ const emit = defineEmits<{
     (e: 'close'): void;
 }>();
 
+// --- ESC Key Logic ---
+const handleEsc = (e: KeyboardEvent) => {
+    if (e.key === 'Escape' && props.show) {
+        close();
+    }
+};
+
 // Dynamic width based on size
 const sizeClasses = computed(() => {
     switch (props.size) {
@@ -35,13 +42,21 @@ const sizeClasses = computed(() => {
 watch(
   () => props.show,
   (visible) => {
-    document.body.style.overflow = visible ? 'hidden' : ''
+    document.body.style.overflow = visible ? 'hidden' : '';
+
+    // Add/Remove listener based on visibility
+    if (visible) {
+        window.addEventListener('keydown', handleEsc);
+    } else {
+        window.removeEventListener('keydown', handleEsc);
+    }
   },
   { immediate: true }
 )
 
 onBeforeUnmount(() => {
-  document.body.style.overflow = ''
+  document.body.style.overflow = '';
+  window.removeEventListener('keydown', handleEsc); // Safety cleanup
 })
 
 // Close handler
